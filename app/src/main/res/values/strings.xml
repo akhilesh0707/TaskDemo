@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">TescoTask</string>
+
+
+    <!--Login Screen Constants-->
+    <string name="login_username_hint_text">Username</string>
+    <string name="login_password_hint_text">Password</string>
+    <string name="login_button_test">Login</string>
+    <string name="login_validation_error_message_username">Please enter username</string>
+    <string name="login_validation_error_message_password">Please enter password</string>
+    <string name="login_validation_error_invalid_user_or_password">Invalid username or password</string>
+
+    <!--Main Screen Constants-->
+    <string name="title_activity_main">MainActivity</string>
+
+
+</resources>
