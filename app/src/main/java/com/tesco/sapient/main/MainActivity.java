@@ -223,7 +223,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                 ItemTypeDTO itemTypeDTO = (ItemTypeDTO) spinnerFilter.getSelectedItem();
                 if (itemTypeDTO != null) {
                     Log.i(TAG, String.valueOf(itemTypeDTO.getId()));
-                    itemAdapter.getFilter().filter(String.valueOf(itemTypeDTO.getId()));
+                    if (itemAdapter != null) {
+                        itemAdapter.getFilter().filter(String.valueOf(itemTypeDTO.getId()));
+                    }
                 }
             }
 

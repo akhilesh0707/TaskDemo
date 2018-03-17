@@ -52,6 +52,7 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         textViewValue.setText("£" + new DecimalFormat("#0.00").format((itemDTO.getItemPrice() * itemDTO.getItemQuantity())));
 
         swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+
         // Drag From Right
         swipeLayout.addDrag(SwipeLayout.DragEdge.Right, swipeLayout.findViewById(R.id.bottom_wrapper));
 
