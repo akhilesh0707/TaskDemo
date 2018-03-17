@@ -11,7 +11,17 @@
     <string name="login_validation_error_invalid_user_or_password">Invalid username or password</string>
 
     <!--Main Screen Constants-->
-    <string name="title_activity_main">MainActivity</string>
+    <string name="main_activity_add_item_button_text">Add an item</string>
+
+    <!--Add an item Constants-->
+    <string name="add_an_item_header_text">Add an item</string>
+    <string name="add_an_item_form_field_scan_item_or_product_code">Scan or enter product barcode</string>
+    <string name="add_an_item_form_field_amount_singles">Amount in singles</string>
+    <string name="add_an_item_form_field_price">Price</string>
+    <string name="add_an_item_form_field_button_add">Add</string>
+    <string name="add_an_item_form_field_button_cancel">Cancel</string>
+    <string name="add_an_item_record_add_successfully">Item add successfully</string>
+    <string name="add_an_item_record_add_fail">Item add failed</string>
 
 
 </resources>

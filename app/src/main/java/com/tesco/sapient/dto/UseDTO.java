@@ -1,20 +1,40 @@
-package com.tesco.sapient.model;
+package com.tesco.sapient.dto;
 
 /**
  * Created by akhpatil on 3/16/2018.
  */
 
-public class UserModel {
+public class UseDTO {
     private int userId;
     private String userName;
     private String password;
+    private int storeId;
+    private String storeName;
 
-    public UserModel() {
+    public UseDTO() {
     }
 
-    public UserModel(String userName, String password) {
+    public UseDTO(String userName, String password, int storeId, String storeName) {
         this.userName = userName;
         this.password = password;
+        this.storeId = storeId;
+        this.storeName = storeName;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
+
+    public String getStoreName() {
+        return storeName;
+    }
+
+    public void setStoreName(String storeName) {
+        this.storeName = storeName;
     }
 
     public int getUserId() {

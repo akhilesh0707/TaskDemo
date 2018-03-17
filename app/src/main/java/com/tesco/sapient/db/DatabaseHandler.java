@@ -3,17 +3,18 @@ package com.tesco.sapient.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.tesco.sapient.model.UserModel;
+import com.tesco.sapient.dto.ItemDTO;
+import com.tesco.sapient.dto.ItemTypeDTO;
+import com.tesco.sapient.dto.UseDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository {
+public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository, ItemRepository {
 
     // All Static variables
     private static final String TAG = DatabaseHandler.class.getSimpleName();
@@ -23,11 +24,28 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository 
     private static final String DATABASE_NAME = "Tesco";
     // User table name
     private static final String TABLE_USER = "user_info";
+    // Item Type table name
+    private static final String TABLE_ITEM_TYPE = "item_type";
+    // Item Type table name
+    private static final String TABLE_ITEMS = "items";
 
     // User Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_USERNAME = "userName";
     private static final String KEY_PASSWORD = "userPassword";
+    private static final String KEY_STORE_ID = "storeId";
+    private static final String KEY_STORE_NAME = "storeName";
+
+    // Item type Table Columns names
+    private static final String KEY_ITEM_TYPE_ID = "id";
+    private static final String KEY_ITEM_TYPE_NAME = "name";
+
+    // Item Table Columns names
+    private static final String KEY_ITEM_ID = "id";
+    private static final String KEY_ITEM_BARCODE = "itemBarCode";
+    private static final String KEY_ITEM_TYPE = "itemTypeCode";
+    private static final String KEY_ITEM_QUANTITY = "itemQuantity";
+    private static final String KEY_ITEM_PRICE = "itemPrice";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -39,11 +57,27 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository 
         String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + KEY_USERNAME + " TEXT, "
-                + KEY_PASSWORD + " TEXT )";
-        db.execSQL(CREATE_USER_TABLE);
+                + KEY_PASSWORD + " TEXT,"
+                + KEY_STORE_ID + " INTEGER, "
+                + KEY_STORE_NAME + " TEXT)";
 
+        String CREATE_ITEM_TYPE_TABLE = "CREATE TABLE " + TABLE_ITEM_TYPE + "("
+                + KEY_ITEM_TYPE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + KEY_ITEM_TYPE_NAME + " TEXT )";
+
+        String CREATE_ITEM_TABLE = "CREATE TABLE " + TABLE_ITEMS + "("
+                + KEY_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + KEY_ITEM_BARCODE + " TEXT, "
+                + KEY_ITEM_TYPE + " INTEGER, "
+                + KEY_ITEM_QUANTITY + " INTEGER, "
+                + KEY_ITEM_PRICE + " REAL)";
+
+        db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_ITEM_TYPE_TABLE);
+        db.execSQL(CREATE_ITEM_TABLE);
         // Inserting dummy user record
         insertUsers(dummyUserList(), db);
+        insertItemType(dummyItemTypeList(), db);
     }
 
     // Upgrading database
@@ -56,22 +90,23 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository 
     }
 
     /**
-     * All CRUD(Create, Read, Update, Delete) Operations
+     * Check user exists or not in user table
+     *
+     * @param useDTO User object which trying to login
+     * @return UserDTO is record found in DB table
      */
-
-    // Check user exists or not in user table
-    public UserModel checkUser(UserModel userModel) {
+    public UseDTO checkUser(UseDTO useDTO) {
         Cursor cursor = null;
         SQLiteDatabase db = null;
-        UserModel user = null;
+        UseDTO user = null;
         try {
             db = this.getReadableDatabase();
             String query = "SELECT * FROM " + TABLE_USER + " WHERE " + KEY_USERNAME + "=? AND " + KEY_PASSWORD + "=?";
-            cursor = db.rawQuery(query, new String[]{userModel.getUserName(), userModel.getPassword()});
+            cursor = db.rawQuery(query, new String[]{useDTO.getUserName(), useDTO.getPassword()});
             //Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
-                    user = new UserModel();
+                    user = new UseDTO();
                     user.setUserId(cursor.getInt(0));
                     user.setUserName(cursor.getString(1));
                 }
@@ -87,14 +122,21 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository 
         return user;
     }
 
-
-    public void insertUsers(List<UserModel> list, SQLiteDatabase db) {
+    /**
+     * Insert user dummy records
+     *
+     * @param list Dummy user list
+     * @param db   db reference to insert record in table
+     */
+    public void insertUsers(List<UseDTO> list, SQLiteDatabase db) {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            for (UserModel userModel : list) {
-                values.put(KEY_USERNAME, userModel.getUserName());
-                values.put(KEY_PASSWORD, userModel.getPassword());
+            for (UseDTO useDTO : list) {
+                values.put(KEY_USERNAME, useDTO.getUserName());
+                values.put(KEY_PASSWORD, useDTO.getPassword());
+                values.put(KEY_STORE_ID, useDTO.getStoreId());
+                values.put(KEY_STORE_NAME, useDTO.getStoreName());
                 db.insert(TABLE_USER, null, values);
             }
             db.setTransactionSuccessful();
@@ -104,22 +146,122 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository 
         Log.d(TAG, "Dummy Record inserted");
     }
 
-    private List<UserModel> dummyUserList() {
-        List<UserModel> list = new ArrayList<>();
-        UserModel userModel = null;
-        userModel = new UserModel("test", "test");
-        list.add(userModel);
-        userModel = new UserModel("akhilesh", "akhilesh");
-        list.add(userModel);
-        userModel = new UserModel("sushant", "sushant");
-        list.add(userModel);
-        userModel = new UserModel("sid", "sid");
-        list.add(userModel);
+    /**
+     * User dummy records
+     *
+     * @return List Dummy users
+     */
+    private List<UseDTO> dummyUserList() {
+        List<UseDTO> list = new ArrayList<>();
+        UseDTO useDTO = null;
+        useDTO = new UseDTO("test", "test", 9001, "Record Wastage");
+        list.add(useDTO);
+        useDTO = new UseDTO("akhilesh", "akhilesh", 9023, "Record Wastage One");
+        list.add(useDTO);
+        useDTO = new UseDTO("sushant", "sushant", 9477, "Record Wastage Two");
+        list.add(useDTO);
+        useDTO = new UseDTO("sid", "sid", 9901, "Record Wastage Thee");
+        list.add(useDTO);
         return list;
     }
 
+    /**
+     * Insert Item type dummy list to table
+     *
+     * @param list dummy item list
+     * @param db   db reference to insert record in table
+     */
+    public void insertItemType(List<ItemTypeDTO> list, SQLiteDatabase db) {
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            for (ItemTypeDTO itemTypeDTO : list) {
+                values.put(KEY_ITEM_TYPE_NAME, itemTypeDTO.getName());
+                db.insert(TABLE_ITEM_TYPE, null, values);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        Log.d(TAG, "Dummy Record inserted item type");
+    }
+
+    /**
+     * Dummy Item record
+     *
+     * @return dummy item type record list
+     */
+    private List<ItemTypeDTO> dummyItemTypeList() {
+        List<ItemTypeDTO> list = new ArrayList<>();
+        ItemTypeDTO itemTypeDTO = null;
+        itemTypeDTO = new ItemTypeDTO("Out Of Code");
+        list.add(itemTypeDTO);
+        itemTypeDTO = new ItemTypeDTO("Damaged");
+        list.add(itemTypeDTO);
+        itemTypeDTO = new ItemTypeDTO("Promotion");
+        list.add(itemTypeDTO);
+        itemTypeDTO = new ItemTypeDTO("Animal feed - out of code");
+        list.add(itemTypeDTO);
+        itemTypeDTO = new ItemTypeDTO("Animal feed - damaged");
+        list.add(itemTypeDTO);
+        return list;
+    }
+
+    /**
+     * All the item type list
+     *
+     * @return Item type list
+     */
+    public List<ItemTypeDTO> getItemTypeList() {
+        List<ItemTypeDTO> itemTypeDTOList = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_ITEM_TYPE;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ItemTypeDTO itemTypeDTO = new ItemTypeDTO();
+                itemTypeDTO.setId(cursor.getInt(0));
+                itemTypeDTO.setName(cursor.getString(1));
+                // Adding Item type to list
+                itemTypeDTOList.add(itemTypeDTO);
+            } while (cursor.moveToNext());
+        }
+        // return pending Item type list
+        return itemTypeDTOList;
+    }
+
+    /**
+     * Used to add item on DB table
+     *
+     * @param itemDTO
+     * @return Insertion status failed or success
+     */
+    public long addItemToTable(ItemDTO itemDTO) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_ITEM_BARCODE, itemDTO.getItemBarCode());
+        values.put(KEY_ITEM_TYPE, itemDTO.getItemTypeCode());
+        values.put(KEY_ITEM_QUANTITY, itemDTO.getItemQuantity());
+        values.put(KEY_ITEM_PRICE, itemDTO.getItemPrice());
+        // Inserting Row
+        return db.insert(TABLE_ITEMS, null, values);
+    }
+
     @Override
-    public UserModel authenticate(UserModel userModel) {
-        return checkUser(userModel);
+    public UseDTO authenticate(UseDTO useDTO) {
+        return checkUser(useDTO);
+    }
+
+
+    @Override
+    public List<ItemTypeDTO> getItemTypes() {
+        return getItemTypeList();
+    }
+
+    @Override
+    public long insertItem(ItemDTO itemDTO) {
+        return addItemToTable(itemDTO);
     }
 }

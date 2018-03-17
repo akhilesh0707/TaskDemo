@@ -3,12 +3,11 @@ package com.tesco.sapient;
 import com.tesco.sapient.db.UserRepository;
 import com.tesco.sapient.login.LoginPresenter;
 import com.tesco.sapient.login.LoginView;
-import com.tesco.sapient.model.UserModel;
+import com.tesco.sapient.dto.UseDTO;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +35,7 @@ public class LoginActivityTest {
     @Test
     public void userSuccessfullyLoginUsingDummyRecord() {
         //Given
-        UserModel user = new UserModel("sid", "sid");
+        UseDTO user = new UseDTO("sid", "sid");
         LoginPresenter presenter = new LoginPresenter(view, repository);
         presenter.login(user);
         //Then

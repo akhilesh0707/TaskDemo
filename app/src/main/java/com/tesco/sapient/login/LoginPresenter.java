@@ -1,7 +1,7 @@
 package com.tesco.sapient.login;
 
 import com.tesco.sapient.db.UserRepository;
-import com.tesco.sapient.model.UserModel;
+import com.tesco.sapient.dto.UseDTO;
 
 /**
  * Created by akhpatil on 3/16/2018.
@@ -16,9 +16,9 @@ public class LoginPresenter {
         this.repository = repository;
     }
 
-    public void login(UserModel user) {
-        UserModel userModel = repository.authenticate(user);
-        if (userModel != null) {
+    public void login(UseDTO user) {
+        UseDTO useDTO = repository.authenticate(user);
+        if (useDTO != null) {
             view.loginSuccess();
         } else {
             view.loginFailed();

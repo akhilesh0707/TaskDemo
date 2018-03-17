@@ -12,18 +12,21 @@ import android.widget.EditText;
 import com.tesco.sapient.R;
 import com.tesco.sapient.db.DatabaseHandler;
 import com.tesco.sapient.main.MainActivity;
-import com.tesco.sapient.model.UserModel;
+import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.util.KeyboardUtil;
 import com.tesco.sapient.util.Validation;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
 
     private LoginPresenter presenter;
     private Context context;
+    private Unbinder unbinder;
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
@@ -36,48 +39,51 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
         // Initializing ButterKnife
-        ButterKnife.bind(this);
-
+        unbinder = ButterKnife.bind(this);
         // Initializing login activity context
         context = this;
-
         //Initialize DataBase
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
-
         // Initializing Presenter
         presenter = new LoginPresenter(this, databaseHandler);
-
-
     }
 
     @OnClick(R.id.buttonLogin)
     public void loginButtonClick(View view) {
+        // Hide keyboard after login button click
+        KeyboardUtil.hideSoftKeyboard(context);
         String userName = editTextUserName.getText().toString().trim();
         String userPassword = editTextPassword.getText().toString().trim();
-
         if (!Validation.isEmpty(userName)) {
-            Snackbar.make(coordinatorLayout, context.getText(R.string.login_validation_error_message_username), Snackbar.LENGTH_LONG).show();
+            editTextUserName.setError(context.getText(R.string.login_validation_error_message_username));
+            editTextUserName.requestFocus();
         } else if (!Validation.isEmpty(userPassword)) {
-            Snackbar.make(coordinatorLayout, context.getText(R.string.login_validation_error_message_password), Snackbar.LENGTH_LONG).show();
+            editTextPassword.setError(context.getText(R.string.login_validation_error_message_password));
+            editTextPassword.requestFocus();
         } else {
-            UserModel user = new UserModel();
+            UseDTO user = new UseDTO();
             user.setUserName(userName);
             user.setPassword(userPassword);
             presenter.login(user);
         }
     }
 
-
     @Override
     public void loginSuccess() {
         Intent intent = new Intent(context, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
     public void loginFailed() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.login_validation_error_invalid_user_or_password), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 }
