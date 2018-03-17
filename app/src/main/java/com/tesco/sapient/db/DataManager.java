@@ -1,21 +1,17 @@
 package com.tesco.sapient.db;
 
 import android.content.Context;
-import android.content.res.Resources;
 
-import com.tesco.sapient.db.DatabaseHandler;
-import com.tesco.sapient.db.UserRepository;
 import com.tesco.sapient.di.AppScope;
 import com.tesco.sapient.di.ApplicationContext;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDto;
-import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.dto.UserDTO;
 
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @AppScope
 public class DataManager implements UserRepository, ItemRepository {
@@ -30,8 +26,8 @@ public class DataManager implements UserRepository, ItemRepository {
     }
 
     @Override
-    public UseDTO authenticate(UseDTO useDTO) {
-        return mDbHelper.checkUser(useDTO);
+    public UserDTO authenticate(UserDTO userDTO) {
+        return mDbHelper.checkUser(userDTO);
     }
 
     @Override

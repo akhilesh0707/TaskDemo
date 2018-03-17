@@ -16,7 +16,7 @@ import com.tesco.sapient.di.component.DaggerActivityComponent;
 import com.tesco.sapient.di.module.ActivityModule;
 import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.main.MainActivity;
-import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.dto.UserDTO;
 import com.tesco.sapient.util.KeyboardUtil;
 import com.tesco.sapient.util.Validation;
 
@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             editTextPassword.setError(context.getText(R.string.login_validation_error_message_password));
             editTextPassword.requestFocus();
         } else {
-            UseDTO user = new UseDTO();
+            UserDTO user = new UserDTO();
             user.setUserName(userName);
             user.setPassword(userPassword);
             presenter.login(user);
@@ -89,7 +89,8 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     }
 
     @Override
-    public void loginSuccess() {
+    public void loginSuccess(UserDTO userDTO) {
+        MyApplication.get(context).setUser(userDTO);
         Intent intent = new Intent(context, MainActivity.class);
         startActivity(intent);
         finish();

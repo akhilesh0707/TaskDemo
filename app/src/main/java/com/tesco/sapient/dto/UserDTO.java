@@ -4,17 +4,17 @@ package com.tesco.sapient.dto;
  * Created by akhpatil on 3/16/2018.
  */
 
-public class UseDTO {
+public class UserDTO {
     private int userId;
     private String userName;
     private String password;
     private int storeId;
     private String storeName;
 
-    public UseDTO() {
+    public UserDTO() {
     }
 
-    public UseDTO(String userName, String password, int storeId, String storeName) {
+    public UserDTO(String userName, String password, int storeId, String storeName) {
         this.userName = userName;
         this.password = password;
         this.storeId = storeId;
@@ -61,4 +61,14 @@ public class UseDTO {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "UserDTO{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", storeId=" + storeId +
+                ", storeName='" + storeName + '\'' +
+                '}';
+    }
 }

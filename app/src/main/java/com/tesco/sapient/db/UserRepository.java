@@ -1,6 +1,6 @@
 package com.tesco.sapient.db;
 
-import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.dto.UserDTO;
 
 /**
  * Created by akhpatil on 3/16/2018.
@@ -8,7 +8,7 @@ import com.tesco.sapient.dto.UseDTO;
 
 public interface UserRepository {
 
-    UseDTO authenticate(UseDTO useDTO);
+    UserDTO authenticate(UserDTO userDTO);
 
 
 }

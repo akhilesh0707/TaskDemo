@@ -75,7 +75,6 @@ public class MainActivityPresenter {
 
     public void getFilterItemTypes() {
         List<ItemTypeDTO> typeDTOList = dataManager.getItemTypes();
-        typeDTOList.add(0, new ItemTypeDTO("All"));
         if (typeDTOList.size() > 1) {
             view.fillFilterSpinner(typeDTOList);
         } else {

@@ -1,26 +1,15 @@
 package com.tesco.sapient;
 
-import android.app.Application;
-
 import com.tesco.sapient.db.DataManager;
-import com.tesco.sapient.db.UserRepository;
-import com.tesco.sapient.di.component.ActivityComponent;
-import com.tesco.sapient.di.component.ApplicationComponent;
-import com.tesco.sapient.di.component.DaggerActivityComponent;
-import com.tesco.sapient.di.module.ActivityModule;
-import com.tesco.sapient.login.LoginActivity;
 import com.tesco.sapient.login.LoginPresenter;
 import com.tesco.sapient.login.LoginView;
-import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.dto.UserDTO;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import javax.inject.Inject;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -38,12 +27,12 @@ public class LoginActivityTest {
     @Mock
     DataManager dataManager;
     private LoginPresenter presenter;
-    private UseDTO user;
+    private UserDTO user;
 
     @Before
     public void setUp() throws Exception {
         presenter = new LoginPresenter(view, dataManager);
-        user = new UseDTO("sid", "sid", 9901, "Record Wastage Thee");
+        user = new UserDTO("sid", "sid", 9901, "Record Wastage Thee");
     }
 
     @Test
@@ -53,7 +42,7 @@ public class LoginActivityTest {
         //When
         presenter.login(user);
         //Then
-        verify(view).loginSuccess();
+        verify(view).loginSuccess(user);
     }
 
     @Test

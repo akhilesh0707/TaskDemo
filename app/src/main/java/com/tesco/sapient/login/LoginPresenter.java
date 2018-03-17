@@ -1,7 +1,7 @@
 package com.tesco.sapient.login;
 
 import com.tesco.sapient.db.DataManager;
-import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.dto.UserDTO;
 
 /**
  * Created by akhpatil on 3/16/2018.
@@ -16,10 +16,10 @@ public class LoginPresenter {
         this.dataManager = dataManager;
     }
 
-    public void login(UseDTO user) {
-        UseDTO useDTO = dataManager.authenticate(user);
-        if (useDTO != null) {
-            view.loginSuccess();
+    public void login(UserDTO user) {
+        UserDTO userDTO = dataManager.authenticate(user);
+        if (userDTO != null) {
+            view.loginSuccess(userDTO);
         } else {
             view.loginFailed();
         }

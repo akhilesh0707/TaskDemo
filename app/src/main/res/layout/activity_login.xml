@@ -39,7 +39,8 @@
                     android:id="@+id/editTextUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/login_username_hint_text" />
+                    android:hint="@string/login_username_hint_text"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -54,7 +55,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/login_password_hint_text"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
 

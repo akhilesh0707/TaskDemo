@@ -13,13 +13,12 @@ import com.tesco.sapient.di.ApplicationContext;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDto;
-import com.tesco.sapient.dto.UseDTO;
+import com.tesco.sapient.dto.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 @AppScope
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -117,23 +116,25 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Check user exists or not in user table
      *
-     * @param useDTO User object which trying to login
+     * @param userDTO User object which trying to login
      * @return UserDTO is record found in DB table
      */
-    public UseDTO checkUser(UseDTO useDTO) {
+    public UserDTO checkUser(UserDTO userDTO) {
         Cursor cursor = null;
         SQLiteDatabase db = null;
-        UseDTO user = null;
+        UserDTO user = null;
         try {
             db = this.getReadableDatabase();
             String query = "SELECT * FROM " + TABLE_USER + " WHERE " + KEY_USERNAME + "=? AND " + KEY_PASSWORD + "=?";
-            cursor = db.rawQuery(query, new String[]{useDTO.getUserName(), useDTO.getPassword()});
-            //Log.v("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+            cursor = db.rawQuery(query, new String[]{userDTO.getUserName(), userDTO.getPassword()});
+            Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {
-                    user = new UseDTO();
+                    user = new UserDTO();
                     user.setUserId(cursor.getInt(0));
                     user.setUserName(cursor.getString(1));
+                    user.setStoreId(cursor.getInt(3));
+                    user.setStoreName(cursor.getString(4));
                 }
             }
         } finally {
@@ -153,15 +154,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param list Dummy user list
      * @param db   db reference to insert record in table
      */
-    public void insertUsers(List<UseDTO> list, SQLiteDatabase db) {
+    public void insertUsers(List<UserDTO> list, SQLiteDatabase db) {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            for (UseDTO useDTO : list) {
-                values.put(KEY_USERNAME, useDTO.getUserName());
-                values.put(KEY_PASSWORD, useDTO.getPassword());
-                values.put(KEY_STORE_ID, useDTO.getStoreId());
-                values.put(KEY_STORE_NAME, useDTO.getStoreName());
+            for (UserDTO userDTO : list) {
+                values.put(KEY_USERNAME, userDTO.getUserName());
+                values.put(KEY_PASSWORD, userDTO.getPassword());
+                values.put(KEY_STORE_ID, userDTO.getStoreId());
+                values.put(KEY_STORE_NAME, userDTO.getStoreName());
                 db.insert(TABLE_USER, null, values);
             }
             db.setTransactionSuccessful();
@@ -176,17 +177,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @return List Dummy users
      */
-    private List<UseDTO> dummyUserList() {
-        List<UseDTO> list = new ArrayList<>();
-        UseDTO useDTO = null;
-        useDTO = new UseDTO("test", "test", 9001, "Record Wastage");
-        list.add(useDTO);
-        useDTO = new UseDTO("akhilesh", "akhilesh", 9023, "Record Wastage One");
-        list.add(useDTO);
-        useDTO = new UseDTO("sushant", "sushant", 9477, "Record Wastage Two");
-        list.add(useDTO);
-        useDTO = new UseDTO("sid", "sid", 9901, "Record Wastage Thee");
-        list.add(useDTO);
+    private List<UserDTO> dummyUserList() {
+        List<UserDTO> list = new ArrayList<>();
+        UserDTO userDTO = null;
+        userDTO = new UserDTO("test", "test", 9001, "Record Wastage");
+        list.add(userDTO);
+        userDTO = new UserDTO("akhilesh", "akhilesh", 9023, "Record Wastage One");
+        list.add(userDTO);
+        userDTO = new UserDTO("sushant", "sushant", 9477, "Record Wastage Two");
+        list.add(userDTO);
+        userDTO = new UserDTO("sid", "sid", 9901, "Record Wastage Thee");
+        list.add(userDTO);
         return list;
     }
 

@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">TescoTask</string>
-
+    <string name="app_name">Waste Management</string>
 
     <!--Login Screen Constants-->
     <string name="login_username_hint_text">Username</string>
@@ -25,6 +24,5 @@
     <string name="add_an_item_record_add_successfully">Item add successfully</string>
     <string name="add_an_item_record_add_fail">Item add failed</string>
     <string name="add_an_item_record_delete_fail">Item delete failed</string>
-
 
 </resources>

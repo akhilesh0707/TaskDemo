@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -28,6 +29,7 @@ import com.tesco.sapient.di.module.ActivityModule;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDto;
+import com.tesco.sapient.dto.UserDTO;
 import com.tesco.sapient.main.adapter.ItemAdapter;
 import com.tesco.sapient.main.adapter.OnItemClickListener;
 import com.tesco.sapient.util.CollapseExpandAnimation;
@@ -49,6 +51,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private Context context;
     private Unbinder unbinder;
     private ItemAdapter itemAdapter;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.textViewTitle)
+    TextView textViewTitle;
+    @BindView(R.id.textViewStoreId)
+    TextView textViewStoreId;
+
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.recyclerViewItem)
@@ -75,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Inject
     DataManager mDataManager;
     private ActivityComponent activityComponent;
+    private UserDTO userDTO;
 
     public ActivityComponent getActivityComponent() {
         if (activityComponent == null) {
@@ -83,14 +93,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                     .applicationComponent(MyApplication.get(this).getComponent())
                     .build();
         }
+        this.userDTO = MyApplication.get(this).getUser();
+        init(userDTO);
         return activityComponent;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Initializing ButterKnife
         unbinder = ButterKnife.bind(this);
         // Initializing login activity context
@@ -100,7 +112,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         // Initializing Presenter
         presenter = new MainActivityPresenter(this, mDataManager);
 
+        Log.d(TAG, "UserDto" + userDTO.toString());
     }
+
 
     @Override
     protected void onResume() {
@@ -109,6 +123,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         presenter.getFilterItemTypes();
         presenter.getItems();
         presenter.getProductBarCodes();
+    }
+
+    public void init(UserDTO userDTO) {
+        textViewTitle.setText(userDTO.getStoreName());
+        textViewStoreId.setText(String.valueOf(userDTO.getStoreId()));
+        textViewStoreId.setVisibility(View.VISIBLE);
     }
 
     @OnClick(R.id.buttonAddItem)
@@ -233,6 +253,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void fillFilterSpinner(List<ItemTypeDTO> list) {
+        list.add(0, new ItemTypeDTO("All"));
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(context, list);
         spinnerFilter.setAdapter(customSpinnerAdapter);
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -258,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void fillFilterNoRecordError(List<ItemTypeDTO> list) {
+        list.add(0, new ItemTypeDTO("All"));
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(context, list);
         spinnerFilter.setAdapter(customSpinnerAdapter);
     }

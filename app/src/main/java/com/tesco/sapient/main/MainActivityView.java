@@ -10,7 +10,7 @@ import java.util.List;
  * Created by akhpatil on 3/16/2018.
  */
 
-interface MainActivityView {
+public interface MainActivityView {
 
     void fillAddItemSpinner(List<ItemTypeDTO> list);
 
