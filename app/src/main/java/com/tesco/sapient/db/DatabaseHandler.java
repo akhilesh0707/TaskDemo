@@ -275,7 +275,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     public List<ItemDTO> getAllItems() {
         List<ItemDTO> itemDTOList = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT ITEM.*,TYPE.* FROM " + TABLE_ITEMS + " AS ITEM INNER JOIN " + TABLE_ITEM_TYPE + " AS TYPE ON ITEM." + KEY_ITEM_TYPE + "=" + "TYPE." + KEY_ITEM_TYPE_ID;
+        String selectQuery = "SELECT ITEM.*,PROD.* FROM " + TABLE_ITEMS + " AS ITEM INNER JOIN " + TABLE_PRODUCT + " AS PROD ON ITEM." + KEY_ITEM_BARCODE + "=" + "PROD." + KEY_PRODUCT_BARCODE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         Log.d("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));

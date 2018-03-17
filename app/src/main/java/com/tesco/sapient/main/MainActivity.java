@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.swipe.util.Attributes;
 import com.tesco.sapient.R;
 import com.tesco.sapient.custom.CustomSpinnerAdapter;
 import com.tesco.sapient.custom.ProductAutocompleteAdapter;
@@ -22,6 +25,8 @@ import com.tesco.sapient.db.DatabaseHandler;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDto;
+import com.tesco.sapient.main.adapter.ItemAdapter;
+import com.tesco.sapient.main.adapter.OnItemClickListener;
 import com.tesco.sapient.util.CollapseExpandAnimation;
 import com.tesco.sapient.util.KeyboardUtil;
 
@@ -32,7 +37,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView {
+public class MainActivity extends AppCompatActivity implements MainActivityView, OnItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private MainActivityPresenter presenter;
@@ -41,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.recyclerViewItem)
+    RecyclerView recyclerViewItem;
 
     // Add new Item fields
     @BindView(R.id.addItemView)
@@ -137,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     public void itemAddSuccessfullyMessage() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_add_successfully), Snackbar.LENGTH_LONG).show();
         resetAddItemForm();
+        buttonAddItem.performClick();
     }
 
     @Override
@@ -154,7 +162,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void showItems(List<ItemDTO> itemDTOList) {
-
+        ItemAdapter adapter = new ItemAdapter(context, itemDTOList);
+        adapter.setClickListener(this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+        recyclerViewItem.setLayoutManager(mLayoutManager);
+        ((ItemAdapter) adapter).setMode(Attributes.Mode.Single);
+        recyclerViewItem.setAdapter(adapter);
     }
 
     @Override
@@ -182,4 +195,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     }
 
+    @Override
+    public void onItemRemoveClicked(ItemDTO itemDTO) {
+        Log.d(TAG, "Delete item: " + itemDTO.getId());
+    }
 }

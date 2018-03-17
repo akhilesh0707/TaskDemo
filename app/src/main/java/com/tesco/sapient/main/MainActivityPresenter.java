@@ -34,17 +34,17 @@ public class MainActivityPresenter {
     public void getItems() {
         List<ItemDTO> itemDTOList = repository.getItemList();
         if (itemDTOList.size() > 0) {
-
+            view.showItems(itemDTOList);
         } else {
-
+            view.noItemsErrorMessage();
         }
     }
 
     public void getProductBarCodes() {
         List<ProductDto> productBarCodeList = repository.getProductBarCodeList();
-        if(productBarCodeList.size()>0){
+        if (productBarCodeList.size() > 0) {
             view.productBarCodeList(productBarCodeList);
-        }else{
+        } else {
         }
 
     }
