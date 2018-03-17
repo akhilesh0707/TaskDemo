@@ -72,4 +72,14 @@ public class MainActivityPresenter {
             view.itemDeleteError();
         }
     }
+
+    public void getFilterItemTypes() {
+        List<ItemTypeDTO> typeDTOList = repository.getItemTypes();
+        typeDTOList.add(0, new ItemTypeDTO("All"));
+        if (typeDTOList.size() > 1) {
+            view.fillFilterSpinner(typeDTOList);
+        } else {
+            view.fillFilterNoRecordError(typeDTOList);
+        }
+    }
 }

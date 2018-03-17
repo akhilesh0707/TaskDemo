@@ -56,12 +56,6 @@ public class CustomSpinnerAdapter extends BaseAdapter {
 
     @Override
     public boolean isEnabled(int position) {
-        if (position == 0) {
-            // Disable the first item from Spinner
-            // First item will be use for hint
-            return false;
-        } else {
-            return true;
-        }
+        return true;
     }
 }

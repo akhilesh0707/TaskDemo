@@ -13,6 +13,7 @@
     <!--Main Screen Constants-->
     <string name="main_activity_add_item_button_text">Add an item</string>
     <string name="main_activity_filter_no_record">No record found</string>
+    <string name="main_activity_filter_default_selected_text">All</string>
 
     <!--Add an item Constants-->
     <string name="add_an_item_header_text">Add an item</string>

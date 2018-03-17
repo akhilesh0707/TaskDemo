@@ -43,13 +43,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private MainActivityPresenter presenter;
     private Context context;
     private Unbinder unbinder;
-
+    private ItemAdapter itemAdapter;
     @BindView(R.id.coordinatorLayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.recyclerViewItem)
     RecyclerView recyclerViewItem;
     @BindView(R.id.textViewNoRecord)
     TextView textViewNoRecord;
+    @BindView(R.id.spinnerFilter)
+    Spinner spinnerFilter;
+
     // Add new Item fields
     @BindView(R.id.addItemView)
     View addItemView;
@@ -85,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     protected void onResume() {
         super.onResume();
         presenter.getItemTypes();
+        presenter.getFilterItemTypes();
         presenter.getItems();
         presenter.getProductBarCodes();
     }
@@ -165,12 +169,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     public void showItems(List<ItemDTO> itemDTOList) {
         textViewNoRecord.setVisibility(View.GONE);
         recyclerViewItem.setVisibility(View.VISIBLE);
-        ItemAdapter adapter = new ItemAdapter(context, itemDTOList);
-        adapter.setClickListener(this);
+        itemAdapter = new ItemAdapter(context, itemDTOList);
+        itemAdapter.setClickListener(this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         recyclerViewItem.setLayoutManager(mLayoutManager);
-        ((ItemAdapter) adapter).setMode(Attributes.Mode.Single);
-        recyclerViewItem.setAdapter(adapter);
+        ((ItemAdapter) itemAdapter).setMode(Attributes.Mode.Single);
+        recyclerViewItem.setAdapter(itemAdapter);
     }
 
     @Override
@@ -210,8 +214,39 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
+    public void fillFilterSpinner(List<ItemTypeDTO> list) {
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(context, list);
+        spinnerFilter.setAdapter(customSpinnerAdapter);
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ItemTypeDTO itemTypeDTO = (ItemTypeDTO) spinnerFilter.getSelectedItem();
+                if (itemTypeDTO != null) {
+                    Log.i(TAG, String.valueOf(itemTypeDTO.getId()));
+                    itemAdapter.getFilter().filter(String.valueOf(itemTypeDTO.getId()));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+    }
+
+    @Override
+    public void fillFilterNoRecordError(List<ItemTypeDTO> list) {
+        CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(context, list);
+        spinnerFilter.setAdapter(customSpinnerAdapter);
+    }
+
+    @Override
     public void onItemRemoveClicked(ItemDTO itemDTO) {
         Log.d(TAG, "Delete item: " + itemDTO.getId());
         presenter.deleteItem(itemDTO);
     }
+
+
 }

@@ -80,7 +80,7 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemViewHolder> implements
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults result = new FilterResults();
             List<ItemDTO> allItem = itemDTOListOrigional;
-            if (constraint == null || constraint.length() == 0) {
+            if (constraint == null || Integer.parseInt(constraint.toString()) == 0) {
                 result.values = allItem;
                 result.count = allItem.size();
             } else {
@@ -98,11 +98,8 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemViewHolder> implements
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            if (results.count == 0) {
-            } else {
-                itemDTOList = (ArrayList<ItemDTO>) results.values;
-                notifyDataSetChanged();
-            }
+            itemDTOList = (ArrayList<ItemDTO>) results.values;
+            notifyDataSetChanged();
         }
     }
 }

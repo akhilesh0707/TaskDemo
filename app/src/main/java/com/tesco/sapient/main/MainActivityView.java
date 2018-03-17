@@ -34,5 +34,8 @@ interface MainActivityView {
 
     void itemDeleteError();
 
+    void fillFilterSpinner(List<ItemTypeDTO> list);
+
+    void fillFilterNoRecordError(List<ItemTypeDTO> list);
 
 }
