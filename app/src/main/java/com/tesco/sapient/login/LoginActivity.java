@@ -9,12 +9,18 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.tesco.sapient.MyApplication;
 import com.tesco.sapient.R;
-import com.tesco.sapient.db.DatabaseHandler;
+import com.tesco.sapient.di.component.ActivityComponent;
+import com.tesco.sapient.di.component.DaggerActivityComponent;
+import com.tesco.sapient.di.module.ActivityModule;
+import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.main.MainActivity;
 import com.tesco.sapient.dto.UseDTO;
 import com.tesco.sapient.util.KeyboardUtil;
 import com.tesco.sapient.util.Validation;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +28,6 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
-
 
     private LoginPresenter presenter;
     private Context context;
@@ -35,6 +40,20 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     @BindView(R.id.editTextPassword)
     EditText editTextPassword;
 
+    @Inject
+    DataManager mDataManager;
+    private ActivityComponent activityComponent;
+
+    public ActivityComponent getActivityComponent() {
+        if (activityComponent == null) {
+            activityComponent = DaggerActivityComponent.builder()
+                    .activityModule(new ActivityModule(this))
+                    .applicationComponent(MyApplication.get(this).getComponent())
+                    .build();
+        }
+        return activityComponent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +63,9 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         // Initializing login activity context
         context = this;
         //Initialize DataBase
-        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        getActivityComponent().inject(this);
         // Initializing Presenter
-        presenter = new LoginPresenter(this, databaseHandler);
+        presenter = new LoginPresenter(this, mDataManager);
     }
 
     @OnClick(R.id.buttonLogin)

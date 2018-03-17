@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.tesco.sapient.di.AppScope;
+import com.tesco.sapient.di.ApplicationContext;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDto;
@@ -16,7 +18,11 @@ import com.tesco.sapient.dto.UseDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository, ItemRepository {
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@AppScope
+public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables
     private static final String TAG = DatabaseHandler.class.getSimpleName();
@@ -57,7 +63,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     private static final String KEY_PRODUCT_BARCODE = "barCode";
     private static final String KEY_PRODUCT_PRICE = "price";
 
-    public DatabaseHandler(Context context) {
+    @Inject
+    public DatabaseHandler(@ApplicationContext Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -303,7 +310,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     /**
      * Delete item from table
      *
-     * @param ItemDTO
+     * @param
      */
     public int deletePendingFile(ItemDTO itemDTO) {
         int returnValue = 0;
@@ -389,34 +396,5 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
         return productDtoList;
     }
 
-    @Override
-    public UseDTO authenticate(UseDTO useDTO) {
-        return checkUser(useDTO);
-    }
 
-
-    @Override
-    public List<ItemTypeDTO> getItemTypes() {
-        return getItemTypeList();
-    }
-
-    @Override
-    public long insertItem(ItemDTO itemDTO) {
-        return addItemToTable(itemDTO);
-    }
-
-    @Override
-    public List<ItemDTO> getItemList() {
-        return getAllItems();
-    }
-
-    @Override
-    public List<ProductDto> getProductBarCodeList() {
-        return getProductBarCodes();
-    }
-
-    @Override
-    public int deleteItemFromDB(ItemDTO itemDTO) {
-        return deletePendingFile(itemDTO);
-    }
 }

@@ -2,6 +2,7 @@ package com.tesco.sapient.main;
 
 import android.util.Log;
 
+import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.db.DatabaseHandler;
 import com.tesco.sapient.db.ItemRepository;
 import com.tesco.sapient.dto.ItemDTO;
@@ -17,16 +18,16 @@ import java.util.List;
 public class MainActivityPresenter {
 
     private MainActivityView view;
-    private ItemRepository repository;
+    private DataManager dataManager;
     private final static String TAG = MainActivityPresenter.class.getSimpleName();
 
-    public MainActivityPresenter(MainActivityView view, ItemRepository repository) {
+    public MainActivityPresenter(MainActivityView view, DataManager dataManager) {
         this.view = view;
-        this.repository = repository;
+        this.dataManager = dataManager;
     }
 
     public void getItemTypes() {
-        List<ItemTypeDTO> typeDTOList = repository.getItemTypes();
+        List<ItemTypeDTO> typeDTOList = dataManager.getItemTypes();
         if (typeDTOList.size() > 0) {
             view.fillAddItemSpinner(typeDTOList);
         } else {
@@ -35,7 +36,7 @@ public class MainActivityPresenter {
     }
 
     public void getItems() {
-        List<ItemDTO> itemDTOList = repository.getItemList();
+        List<ItemDTO> itemDTOList = dataManager.getItemList();
         Log.d(TAG, "ItemList size: " + itemDTOList.size());
         if (itemDTOList.size() > 0) {
             view.showItems(itemDTOList);
@@ -45,16 +46,16 @@ public class MainActivityPresenter {
     }
 
     public void getProductBarCodes() {
-        List<ProductDto> productBarCodeList = repository.getProductBarCodeList();
+        List<ProductDto> productBarCodeList = dataManager.getProductBarCodeList();
         if (productBarCodeList.size() > 0) {
             view.productBarCodeList(productBarCodeList);
         } else {
-        }
 
+        }
     }
 
     public void addItem(ItemDTO itemDTO) {
-        long insertStatus = repository.insertItem(itemDTO);
+        long insertStatus = dataManager.insertItem(itemDTO);
         if (insertStatus == -1) {
             view.itemAddErrorMessage();
         } else {
@@ -62,9 +63,8 @@ public class MainActivityPresenter {
         }
     }
 
-
     public void deleteItem(ItemDTO itemDTO) {
-        int deleteStatus = repository.deleteItemFromDB(itemDTO);
+        int deleteStatus = dataManager.deleteItemFromDB(itemDTO);
         Log.d(TAG, "Delete status value is:" + deleteStatus);
         if (deleteStatus == 1) {
             view.itemDeleteSuccessfully();
@@ -74,7 +74,7 @@ public class MainActivityPresenter {
     }
 
     public void getFilterItemTypes() {
-        List<ItemTypeDTO> typeDTOList = repository.getItemTypes();
+        List<ItemTypeDTO> typeDTOList = dataManager.getItemTypes();
         typeDTOList.add(0, new ItemTypeDTO("All"));
         if (typeDTOList.size() > 1) {
             view.fillFilterSpinner(typeDTOList);

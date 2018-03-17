@@ -39,4 +39,9 @@ dependencies {
     testCompile 'org.mockito:mockito-core:' + project.ext.mMockitoVersion
     androidTestCompile 'org.mockito:mockito-android:' + project.ext.mMockitoAndroidVersion
 
+    //Dagger 2
+    implementation 'com.google.dagger:dagger:' + project.ext.mDagger2Version
+    annotationProcessor 'com.google.dagger:dagger-compiler:' + project.ext.mDagger2Version
+    annotationProcessor 'com.google.dagger:dagger-android-processor:' + project.ext.mDagger2Version
+
 }

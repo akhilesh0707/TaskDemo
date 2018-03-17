@@ -1,6 +1,6 @@
 package com.tesco.sapient.login;
 
-import com.tesco.sapient.db.UserRepository;
+import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.dto.UseDTO;
 
 /**
@@ -9,15 +9,15 @@ import com.tesco.sapient.dto.UseDTO;
 
 public class LoginPresenter {
     private LoginView view;
-    private UserRepository repository;
+    private DataManager dataManager;
 
-    public LoginPresenter(LoginView view, UserRepository repository) {
+    public LoginPresenter(LoginView view, DataManager dataManager) {
         this.view = view;
-        this.repository = repository;
+        this.dataManager = dataManager;
     }
 
     public void login(UseDTO user) {
-        UseDTO useDTO = repository.authenticate(user);
+        UseDTO useDTO = dataManager.authenticate(user);
         if (useDTO != null) {
             view.loginSuccess();
         } else {

@@ -15,13 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.daimajia.swipe.util.Attributes;
+import com.tesco.sapient.MyApplication;
 import com.tesco.sapient.R;
 import com.tesco.sapient.custom.CustomSpinnerAdapter;
 import com.tesco.sapient.custom.ProductAutocompleteAdapter;
-import com.tesco.sapient.db.DatabaseHandler;
+import com.tesco.sapient.db.DataManager;
+import com.tesco.sapient.di.component.ActivityComponent;
+import com.tesco.sapient.di.component.DaggerActivityComponent;
+import com.tesco.sapient.di.module.ActivityModule;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDto;
@@ -31,6 +34,8 @@ import com.tesco.sapient.util.CollapseExpandAnimation;
 import com.tesco.sapient.util.KeyboardUtil;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,6 +72,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @BindView(R.id.editTextPrice)
     EditText editTextPrice;
 
+    @Inject
+    DataManager mDataManager;
+    private ActivityComponent activityComponent;
+
+    public ActivityComponent getActivityComponent() {
+        if (activityComponent == null) {
+            activityComponent = DaggerActivityComponent.builder()
+                    .activityModule(new ActivityModule(this))
+                    .applicationComponent(MyApplication.get(this).getComponent())
+                    .build();
+        }
+        return activityComponent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,9 +96,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         // Initializing login activity context
         context = this;
         //Initialize DataBase
-        DatabaseHandler databaseHandler = new DatabaseHandler(context);
+        getActivityComponent().inject(this);
         // Initializing Presenter
-        presenter = new MainActivityPresenter(this, databaseHandler);
+        presenter = new MainActivityPresenter(this, mDataManager);
 
     }
 

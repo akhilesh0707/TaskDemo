@@ -35,6 +35,9 @@ allprojects {
         mMockitoVersion = "2.7.22"
         mMockitoAndroidVersion = "2.7.22"
 
+        // Dagger 2
+        mDagger2Version="2.13"
+
 
     }
 
