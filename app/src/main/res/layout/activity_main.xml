@@ -48,11 +48,20 @@
 
                 <include layout="@layout/custom_horizontal_line_without_margin" />
 
+                <TextView
+                    android:id="@+id/textViewNoRecord"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:text="@string/main_activity_filter_no_record" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerViewItem"
                     android:layout_width="match_parent"
-                    android:layout_margin="16dp"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:scrollbars="vertical" />
 
             </LinearLayout>

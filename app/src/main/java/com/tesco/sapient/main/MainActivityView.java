@@ -30,4 +30,9 @@ interface MainActivityView {
 
     void noProductBarCodeErrorMessage();
 
+    void itemDeleteSuccessfully();
+
+    void itemDeleteError();
+
+
 }

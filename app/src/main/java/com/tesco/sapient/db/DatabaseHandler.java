@@ -278,8 +278,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
         String selectQuery = "SELECT ITEM.*,PROD.* FROM " + TABLE_ITEMS + " AS ITEM INNER JOIN " + TABLE_PRODUCT + " AS PROD ON ITEM." + KEY_ITEM_BARCODE + "=" + "PROD." + KEY_PRODUCT_BARCODE;
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        Log.d("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
-        Log.d("Query ", selectQuery);
+        //Log.d("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+        //Log.d("Query ", selectQuery);
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
@@ -290,7 +290,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
                 itemDTO.setItemQuantity(cursor.getInt(3));
                 itemDTO.setItemPrice(cursor.getDouble(4));
                 itemDTO.setItemTypeName(cursor.getString(6));
-                Log.d(TAG, itemDTO.toString());
+                //Log.d(TAG, itemDTO.toString());
                 // Adding Items to list
                 itemDTOList.add(itemDTO);
             } while (cursor.moveToNext());
@@ -298,6 +298,21 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
         // return Item list
         return itemDTOList;
     }
+
+
+    /**
+     * Delete item from table
+     *
+     * @param ItemDTO
+     */
+    public int deletePendingFile(ItemDTO itemDTO) {
+        int returnValue = 0;
+        SQLiteDatabase db = this.getWritableDatabase();
+        returnValue = db.delete(TABLE_ITEMS, KEY_ITEM_ID + " = ?", new String[]{String.valueOf(itemDTO.getId())});
+        db.close();
+        return returnValue;
+    }
+
 
     /**
      * Dummy Product for barcode record
@@ -398,5 +413,10 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     @Override
     public List<ProductDto> getProductBarCodeList() {
         return getProductBarCodes();
+    }
+
+    @Override
+    public int deleteItemFromDB(ItemDTO itemDTO) {
+        return deletePendingFile(itemDTO);
     }
 }

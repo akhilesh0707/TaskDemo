@@ -18,4 +18,6 @@ public interface ItemRepository {
     List<ItemDTO> getItemList();
 
     List<ProductDto> getProductBarCodeList();
+
+    int deleteItemFromDB(ItemDTO itemDTO);
 }

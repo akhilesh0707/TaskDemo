@@ -1,5 +1,7 @@
 package com.tesco.sapient.main;
 
+import android.util.Log;
+
 import com.tesco.sapient.db.DatabaseHandler;
 import com.tesco.sapient.db.ItemRepository;
 import com.tesco.sapient.dto.ItemDTO;
@@ -16,6 +18,7 @@ public class MainActivityPresenter {
 
     private MainActivityView view;
     private ItemRepository repository;
+    private final static String TAG = MainActivityPresenter.class.getSimpleName();
 
     public MainActivityPresenter(MainActivityView view, ItemRepository repository) {
         this.view = view;
@@ -33,6 +36,7 @@ public class MainActivityPresenter {
 
     public void getItems() {
         List<ItemDTO> itemDTOList = repository.getItemList();
+        Log.d(TAG, "ItemList size: " + itemDTOList.size());
         if (itemDTOList.size() > 0) {
             view.showItems(itemDTOList);
         } else {
@@ -59,4 +63,13 @@ public class MainActivityPresenter {
     }
 
 
+    public void deleteItem(ItemDTO itemDTO) {
+        int deleteStatus = repository.deleteItemFromDB(itemDTO);
+        Log.d(TAG, "Delete status value is:" + deleteStatus);
+        if (deleteStatus == 1) {
+            view.itemDeleteSuccessfully();
+        } else {
+            view.itemDeleteError();
+        }
+    }
 }

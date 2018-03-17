@@ -48,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.recyclerViewItem)
     RecyclerView recyclerViewItem;
-
+    @BindView(R.id.textViewNoRecord)
+    TextView textViewNoRecord;
     // Add new Item fields
     @BindView(R.id.addItemView)
     View addItemView;
@@ -144,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     public void itemAddSuccessfullyMessage() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_add_successfully), Snackbar.LENGTH_LONG).show();
         resetAddItemForm();
-        buttonAddItem.performClick();
+        presenter.getItems();
     }
 
     @Override
@@ -162,6 +163,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void showItems(List<ItemDTO> itemDTOList) {
+        textViewNoRecord.setVisibility(View.GONE);
+        recyclerViewItem.setVisibility(View.VISIBLE);
         ItemAdapter adapter = new ItemAdapter(context, itemDTOList);
         adapter.setClickListener(this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
@@ -172,7 +175,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void noItemsErrorMessage() {
-
+        textViewNoRecord.setVisibility(View.VISIBLE);
+        recyclerViewItem.setVisibility(View.GONE);
     }
 
     @Override
@@ -196,7 +200,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
+    public void itemDeleteSuccessfully() {
+        presenter.getItems();
+    }
+
+    @Override
+    public void itemDeleteError() {
+        Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_delete_fail), Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
     public void onItemRemoveClicked(ItemDTO itemDTO) {
         Log.d(TAG, "Delete item: " + itemDTO.getId());
+        presenter.deleteItem(itemDTO);
     }
 }
