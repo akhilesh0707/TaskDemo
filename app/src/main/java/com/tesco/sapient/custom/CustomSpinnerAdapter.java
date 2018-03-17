@@ -1,4 +1,4 @@
-package com.tesco.sapient.adapter;
+package com.tesco.sapient.custom;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -4,6 +4,7 @@ import com.tesco.sapient.db.DatabaseHandler;
 import com.tesco.sapient.db.ItemRepository;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
+import com.tesco.sapient.dto.ProductDto;
 
 import java.util.List;
 
@@ -21,13 +22,31 @@ public class MainActivityPresenter {
         this.repository = repository;
     }
 
-    public void loadItemType() {
+    public void getItemTypes() {
         List<ItemTypeDTO> typeDTOList = repository.getItemTypes();
         if (typeDTOList.size() > 0) {
             view.fillAddItemSpinner(typeDTOList);
         } else {
             view.noItemTypeRecord(typeDTOList);
         }
+    }
+
+    public void getItems() {
+        List<ItemDTO> itemDTOList = repository.getItemList();
+        if (itemDTOList.size() > 0) {
+
+        } else {
+
+        }
+    }
+
+    public void getProductBarCodes() {
+        List<ProductDto> productBarCodeList = repository.getProductBarCodeList();
+        if(productBarCodeList.size()>0){
+            view.productBarCodeList(productBarCodeList);
+        }else{
+        }
+
     }
 
     public void addItem(ItemDTO itemDTO) {
@@ -38,4 +57,6 @@ public class MainActivityPresenter {
             view.itemAddSuccessfullyMessage();
         }
     }
+
+
 }

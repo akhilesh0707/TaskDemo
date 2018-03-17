@@ -7,15 +7,21 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.tesco.sapient.R;
-import com.tesco.sapient.adapter.CustomSpinnerAdapter;
+import com.tesco.sapient.custom.CustomSpinnerAdapter;
+import com.tesco.sapient.custom.ProductAutocompleteAdapter;
 import com.tesco.sapient.db.DatabaseHandler;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
+import com.tesco.sapient.dto.ProductDto;
 import com.tesco.sapient.util.CollapseExpandAnimation;
 import com.tesco.sapient.util.KeyboardUtil;
 
@@ -42,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @BindView(R.id.buttonAddItem)
     Button buttonAddItem;
     @BindView(R.id.editTextProductCode)
-    EditText editTextProductCode;
+    AutoCompleteTextView editTextProductCode;
     @BindView(R.id.spinnerItemType)
     Spinner spinnerItemType;
     @BindView(R.id.editTextAmountSingle)
@@ -64,12 +70,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         DatabaseHandler databaseHandler = new DatabaseHandler(context);
         // Initializing Presenter
         presenter = new MainActivityPresenter(this, databaseHandler);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.loadItemType();
+        presenter.getItemTypes();
+        presenter.getItems();
+        presenter.getProductBarCodes();
     }
 
     @OnClick(R.id.buttonAddItem)
@@ -92,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @OnClick(R.id.buttonSubmit)
     public void addItemClick(View view) {
         KeyboardUtil.hideSoftKeyboard(context);
-        String barCode = editTextProductCode.getText().toString().trim();
+        int barCode = Integer.parseInt(editTextProductCode.getText().toString().trim());
         ItemTypeDTO itemTypeDTO = (ItemTypeDTO) spinnerItemType.getSelectedItem();
         int quantity = Integer.parseInt(editTextAmountSingle.getText().toString().trim());
         double price = Double.parseDouble(editTextPrice.getText().toString().trim());
@@ -141,6 +150,36 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         spinnerItemType.setSelection(0);
         editTextAmountSingle.setText(null);
         editTextPrice.setText(null);
+    }
+
+    @Override
+    public void showItems(List<ItemDTO> itemDTOList) {
+
+    }
+
+    @Override
+    public void noItemsErrorMessage() {
+
+    }
+
+    @Override
+    public void productBarCodeList(List<ProductDto> list) {
+        final ProductAutocompleteAdapter adapter = new ProductAutocompleteAdapter(this, list);
+        editTextProductCode.setThreshold(1);
+        editTextProductCode.setAdapter(adapter);
+        editTextProductCode.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ProductDto productDto = adapter.getItem(position);
+                editTextProductCode.setText(String.valueOf(productDto.getBarCode()));
+                editTextPrice.setText(String.valueOf(productDto.getPrice()));
+            }
+        });
+    }
+
+    @Override
+    public void noProductBarCodeErrorMessage() {
+
     }
 
 }

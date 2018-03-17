@@ -1,6 +1,8 @@
 package com.tesco.sapient.main;
 
+import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
+import com.tesco.sapient.dto.ProductDto;
 
 import java.util.List;
 
@@ -20,5 +22,12 @@ interface MainActivityView {
 
     void resetAddItemForm();
 
+    void showItems(List<ItemDTO> list);
+
+    void noItemsErrorMessage();
+
+    void productBarCodeList(List<ProductDto> list);
+
+    void noProductBarCodeErrorMessage();
 
 }

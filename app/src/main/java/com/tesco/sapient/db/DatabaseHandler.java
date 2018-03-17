@@ -3,12 +3,14 @@ package com.tesco.sapient.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
+import com.tesco.sapient.dto.ProductDto;
 import com.tesco.sapient.dto.UseDTO;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     private static final String TABLE_ITEM_TYPE = "item_type";
     // Item Type table name
     private static final String TABLE_ITEMS = "items";
+    // Product BarCode Type table name
+    private static final String TABLE_PRODUCT = "product";
 
     // User Table Columns names
     private static final String KEY_ID = "id";
@@ -46,6 +50,12 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     private static final String KEY_ITEM_TYPE = "itemTypeCode";
     private static final String KEY_ITEM_QUANTITY = "itemQuantity";
     private static final String KEY_ITEM_PRICE = "itemPrice";
+
+    // Item Table Columns names
+    private static final String KEY_PRODUCT_ID = "id";
+    private static final String KEY_PRODUCT_NAME = "name";
+    private static final String KEY_PRODUCT_BARCODE = "barCode";
+    private static final String KEY_PRODUCT_PRICE = "price";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -67,17 +77,25 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
 
         String CREATE_ITEM_TABLE = "CREATE TABLE " + TABLE_ITEMS + "("
                 + KEY_ITEM_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + KEY_ITEM_BARCODE + " TEXT, "
+                + KEY_ITEM_BARCODE + " INTEGER, "
                 + KEY_ITEM_TYPE + " INTEGER, "
                 + KEY_ITEM_QUANTITY + " INTEGER, "
                 + KEY_ITEM_PRICE + " REAL)";
 
+        String CREATE_PRODUCT_TABLE = "CREATE TABLE " + TABLE_PRODUCT + "("
+                + KEY_PRODUCT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + KEY_PRODUCT_NAME + " TEXT, "
+                + KEY_PRODUCT_BARCODE + " INTEGER,"
+                + KEY_PRODUCT_PRICE + " REAL)";
+
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_ITEM_TYPE_TABLE);
         db.execSQL(CREATE_ITEM_TABLE);
+        db.execSQL(CREATE_PRODUCT_TABLE);
         // Inserting dummy user record
         insertUsers(dummyUserList(), db);
         insertItemType(dummyItemTypeList(), db);
+        insertBarcodeProduct(dummyProductBarcodeList(), db);
     }
 
     // Upgrading database
@@ -249,6 +267,113 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
         return db.insert(TABLE_ITEMS, null, values);
     }
 
+    /**
+     * Item list to render RecylcerView
+     *
+     * @return item list
+     */
+    public List<ItemDTO> getAllItems() {
+        List<ItemDTO> itemDTOList = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT ITEM.*,TYPE.* FROM " + TABLE_ITEMS + " AS ITEM INNER JOIN " + TABLE_ITEM_TYPE + " AS TYPE ON ITEM." + KEY_ITEM_TYPE + "=" + "TYPE." + KEY_ITEM_TYPE_ID;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        Log.d("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+        Log.d("Query ", selectQuery);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ItemDTO itemDTO = new ItemDTO();
+                itemDTO.setId(cursor.getInt(0));
+                itemDTO.setItemBarCode(cursor.getInt(1));
+                itemDTO.setItemTypeCode(cursor.getInt(2));
+                itemDTO.setItemQuantity(cursor.getInt(3));
+                itemDTO.setItemPrice(cursor.getDouble(4));
+                itemDTO.setItemTypeName(cursor.getString(6));
+                Log.d(TAG, itemDTO.toString());
+                // Adding Items to list
+                itemDTOList.add(itemDTO);
+            } while (cursor.moveToNext());
+        }
+        // return Item list
+        return itemDTOList;
+    }
+
+    /**
+     * Dummy Product for barcode record
+     *
+     * @return dummy Product barcode record list
+     */
+    private List<ProductDto> dummyProductBarcodeList() {
+        List<ProductDto> list = new ArrayList<>();
+        ProductDto productDto = null;
+        productDto = new ProductDto("Candy mix", 1234, 22.90);
+        list.add(productDto);
+        productDto = new ProductDto("Dell damaged laptop", 1235, 43.00);
+        list.add(productDto);
+        productDto = new ProductDto("HP damaged laptop", 1236, 34.60);
+        list.add(productDto);
+        productDto = new ProductDto("Cool mint expired", 1237, 80.89);
+        list.add(productDto);
+        productDto = new ProductDto("Tread jam mix", 1238, 77.10);
+        list.add(productDto);
+        productDto = new ProductDto("Apple Iphone damaged", 1239, 77.90);
+        list.add(productDto);
+        return list;
+    }
+
+    /**
+     * inserting dummy product barcode to db
+     *
+     * @param list
+     * @param db
+     */
+    public void insertBarcodeProduct(List<ProductDto> list, SQLiteDatabase db) {
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            for (ProductDto productDto : list) {
+                values.put(KEY_PRODUCT_NAME, productDto.getName());
+                values.put(KEY_PRODUCT_BARCODE, productDto.getBarCode());
+                values.put(KEY_PRODUCT_PRICE, productDto.getPrice());
+                db.insert(TABLE_PRODUCT, null, values);
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        Log.d(TAG, "Dummy Record inserted product barcode");
+    }
+
+    /**
+     * ProductBarCode list for AutoComplete
+     *
+     * @return ProductDto list
+     */
+    public List<ProductDto> getProductBarCodes() {
+        List<ProductDto> productDtoList = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT * FROM " + TABLE_PRODUCT;
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        //Log.d("Cursor Object", DatabaseUtils.dumpCursorToString(cursor));
+        //Log.d("Query ", selectQuery);
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                ProductDto productDto = new ProductDto();
+                productDto.setId(cursor.getInt(0));
+                productDto.setName(cursor.getString(1));
+                productDto.setBarCode(cursor.getInt(2));
+                productDto.setPrice(cursor.getDouble(3));
+                // Adding Items to list
+                productDtoList.add(productDto);
+            } while (cursor.moveToNext());
+        }
+        // return Item list
+        return productDtoList;
+    }
+
     @Override
     public UseDTO authenticate(UseDTO useDTO) {
         return checkUser(useDTO);
@@ -263,5 +388,15 @@ public class DatabaseHandler extends SQLiteOpenHelper implements UserRepository,
     @Override
     public long insertItem(ItemDTO itemDTO) {
         return addItemToTable(itemDTO);
+    }
+
+    @Override
+    public List<ItemDTO> getItemList() {
+        return getAllItems();
+    }
+
+    @Override
+    public List<ProductDto> getProductBarCodeList() {
+        return getProductBarCodes();
     }
 }

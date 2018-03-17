@@ -6,7 +6,7 @@ package com.tesco.sapient.dto;
 
 public class ItemDTO {
     private int id;
-    private String itemBarCode;
+    private int itemBarCode;
     private int itemTypeCode;
     private String itemTypeName;
     private int itemQuantity;
@@ -20,11 +20,11 @@ public class ItemDTO {
         this.id = id;
     }
 
-    public String getItemBarCode() {
+    public int getItemBarCode() {
         return itemBarCode;
     }
 
-    public void setItemBarCode(String itemBarCode) {
+    public void setItemBarCode(int itemBarCode) {
         this.itemBarCode = itemBarCode;
     }
 
