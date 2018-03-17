@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     public void showItems(List<ItemDTO> itemDTOList) {
         textViewNoRecord.setVisibility(View.GONE);
         recyclerViewItem.setVisibility(View.VISIBLE);
-        itemAdapter = new ItemAdapter(context, itemDTOList);
+        itemAdapter = new ItemAdapter(itemDTOList);
         itemAdapter.setClickListener(this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         recyclerViewItem.setLayoutManager(mLayoutManager);

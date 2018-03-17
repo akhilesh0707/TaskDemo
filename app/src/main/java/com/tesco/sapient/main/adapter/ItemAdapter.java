@@ -1,6 +1,7 @@
 package com.tesco.sapient.main.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,16 @@ import com.tesco.sapient.dto.ItemDTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemAdapter extends RecyclerSwipeAdapter<ItemViewHolder> implements Filterable {
-    private Context mContext;
+public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> implements Filterable {
+
     private List<ItemDTO> itemDTOList;
     private List<ItemDTO> itemDTOListOrigional = null;
     private EventFilter itemFilter = new EventFilter();
     private OnItemClickListener clickListener;
-    private boolean swipeEnabled = false;
+    private static final int VIEW_TYPE_DATA = 1;
+    private static final int VIEW_TYPE_EMPTY = 2;
 
-    public ItemAdapter(Context context, List<ItemDTO> itemDTOList) {
-        this.mContext = context;
+    public ItemAdapter(List<ItemDTO> itemDTOList) {
         this.itemDTOList = itemDTOList;
         this.itemDTOListOrigional = itemDTOList;
     }
@@ -47,22 +48,53 @@ public class ItemAdapter extends RecyclerSwipeAdapter<ItemViewHolder> implements
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyleview_item_list, parent, false);
-        return new ItemViewHolder(view, clickListener);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        RecyclerView.ViewHolder viewHolder;
+        if (viewType == VIEW_TYPE_DATA) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyleview_item_list, parent, false);
+            viewHolder = new ItemViewHolder(view, clickListener);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_empty_view, parent, false);
+            viewHolder = new EmptyViewHolder(view);
+        }
+        return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final ItemViewHolder viewHolder, final int position) {
-        final ItemDTO itemDTO = itemDTOList.get(position);
-        viewHolder.bind(itemDTO);
-        // mItemManger is member in RecyclerSwipeAdapter Class
-        mItemManger.bindView(viewHolder.itemView, position);
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
+
+        int viewType = getItemViewType(position);
+        if (viewType == VIEW_TYPE_EMPTY) {
+            EmptyViewHolder emptyViewHolder = (EmptyViewHolder) viewHolder;
+        } else {
+            final ItemDTO itemDTO = itemDTOList.get(position);
+            ItemViewHolder itemViewHolder = (ItemViewHolder) viewHolder;
+            itemViewHolder.bind(itemDTO);
+            // mItemManger is member in RecyclerSwipeAdapter Class
+            mItemManger.bindView(viewHolder.itemView, position);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return itemDTOList.size();
+        if (itemDTOList != null) {
+            if (itemDTOList.size() == 0) {
+                return 1;
+            } else {
+                return itemDTOList.size();
+            }
+        }
+        return 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (itemDTOList.size() == 0) {
+            return VIEW_TYPE_EMPTY;
+        } else {
+            return VIEW_TYPE_DATA;
+        }
     }
 
     @Override
