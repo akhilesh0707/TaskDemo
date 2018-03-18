@@ -13,7 +13,7 @@ import java.util.List;
 public interface ItemRepository {
     List<ItemTypeDTO> getItemTypes();
 
-    long insertItem(ItemDTO itemDTO);
+    boolean insertItem(ItemDTO itemDTO);
 
     List<ItemDTO> getItemList();
 

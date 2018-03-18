@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -80,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     EditText editTextAmountSingle;
     @BindView(R.id.editTextPrice)
     EditText editTextPrice;
+    @BindView(R.id.buttonSubmit)
+    Button buttonSubmit;
 
     @Inject
     DataManager mDataManager;
@@ -129,6 +133,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         textViewTitle.setText(userDTO.getStoreName());
         textViewStoreId.setText(String.valueOf(userDTO.getStoreId()));
         textViewStoreId.setVisibility(View.VISIBLE);
+
+        editTextProductCode.addTextChangedListener(watcher);
+        editTextAmountSingle.addTextChangedListener(watcher);
+        editTextPrice.addTextChangedListener(watcher);
+        buttonSubmit.setEnabled(false);
     }
 
     @OnClick(R.id.buttonAddItem)
@@ -150,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @OnClick(R.id.buttonSubmit)
     public void addItemClick(View view) {
+        Log.d(TAG, "Add item clicked");
         KeyboardUtil.hideSoftKeyboard(context);
         int barCode = Integer.parseInt(editTextProductCode.getText().toString().trim());
         ItemTypeDTO itemTypeDTO = (ItemTypeDTO) spinnerItemType.getSelectedItem();
@@ -180,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void noItemTypeRecord(List<ItemTypeDTO> list) {
-
+        Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_no_item_type), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -238,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void noProductBarCodeErrorMessage() {
-
+        Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_no_product_barcode), Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -270,11 +280,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
-
-
     }
 
     @Override
@@ -291,4 +298,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
 
+    private final TextWatcher watcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String barCode = editTextProductCode.getText().toString().trim();
+            String quantity = editTextAmountSingle.getText().toString().trim();
+            String price = editTextPrice.getText().toString().trim();
+            if (barCode.isEmpty() || quantity.isEmpty() || price.isEmpty()) {
+                buttonSubmit.setEnabled(false);
+            } else {
+                buttonSubmit.setEnabled(true);
+            }
+        }
+    };
 }

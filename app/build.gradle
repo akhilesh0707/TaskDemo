@@ -29,22 +29,29 @@ dependencies {
     implementation 'com.android.support:design:' + project.ext.mbuildToolsVersion
     implementation 'com.android.support:recyclerview-v7:' + project.ext.mbuildToolsVersion
     implementation 'com.android.support:cardview-v7:' + project.ext.mbuildToolsVersion
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    androidTestImplementation 'com.android.support.test:runner:'+ project.ext.mTestRunnerVersion
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:' + project.ext.mEspressoVersion
+    implementation 'com.android.support.constraint:constraint-layout:' + project.ext.mConstraintVersion
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
-    // Binding views using ButterKnife dependency
+
+    // ButterKnife
     implementation 'com.jakewharton:butterknife:' + project.ext.mButterKnifeVersion
     annotationProcessor 'com.jakewharton:butterknife-compiler:' + project.ext.mButterKnifeVersion
+
     // JUnit
-    testImplementation 'junit:junit:4.12'
-    // Mockito for Mocking and testing Presenter and business layer
+    testImplementation 'junit:junit:' + project.ext.mJunitVersion
+
+    // Mockito
     testCompile 'org.mockito:mockito-core:' + project.ext.mMockitoVersion
     androidTestCompile 'org.mockito:mockito-android:' + project.ext.mMockitoAndroidVersion
 
-    //Dagger 2
+    // Dagger 2
     implementation 'com.google.dagger:dagger:' + project.ext.mDagger2Version
     annotationProcessor 'com.google.dagger:dagger-compiler:' + project.ext.mDagger2Version
     annotationProcessor 'com.google.dagger:dagger-android-processor:' + project.ext.mDagger2Version
 
+    // RxJava RxAndroid
+    implementation 'io.reactivex.rxjava2:rxjava:' + project.ext.mRxJavaVersion
+    implementation 'io.reactivex.rxjava2:rxandroid:' + project.ext.mRxAndroidVersion
 }

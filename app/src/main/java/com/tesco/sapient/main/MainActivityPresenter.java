@@ -19,7 +19,6 @@ public class MainActivityPresenter {
 
     private MainActivityView view;
     private DataManager dataManager;
-    private final static String TAG = MainActivityPresenter.class.getSimpleName();
 
     public MainActivityPresenter(MainActivityView view, DataManager dataManager) {
         this.view = view;
@@ -37,7 +36,6 @@ public class MainActivityPresenter {
 
     public void getItems() {
         List<ItemDTO> itemDTOList = dataManager.getItemList();
-        Log.d(TAG, "ItemList size: " + itemDTOList.size());
         if (itemDTOList.size() > 0) {
             view.showItems(itemDTOList);
         } else {
@@ -50,13 +48,13 @@ public class MainActivityPresenter {
         if (productBarCodeList.size() > 0) {
             view.productBarCodeList(productBarCodeList);
         } else {
-
+            view.noProductBarCodeErrorMessage();
         }
     }
 
     public void addItem(ItemDTO itemDTO) {
-        long insertStatus = dataManager.insertItem(itemDTO);
-        if (insertStatus == -1) {
+        boolean insertStatus = dataManager.insertItem(itemDTO);
+        if (!insertStatus) {
             view.itemAddErrorMessage();
         } else {
             view.itemAddSuccessfullyMessage();
@@ -65,7 +63,6 @@ public class MainActivityPresenter {
 
     public void deleteItem(ItemDTO itemDTO) {
         int deleteStatus = dataManager.deleteItemFromDB(itemDTO);
-        Log.d(TAG, "Delete status value is:" + deleteStatus);
         if (deleteStatus == 1) {
             view.itemDeleteSuccessfully();
         } else {

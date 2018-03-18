@@ -264,7 +264,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param itemDTO
      * @return Insertion status failed or success
      */
-    public long addItemToTable(ItemDTO itemDTO) {
+    public boolean addItemToTable(ItemDTO itemDTO) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_ITEM_BARCODE, itemDTO.getItemBarCode());
@@ -272,7 +272,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_ITEM_QUANTITY, itemDTO.getItemQuantity());
         values.put(KEY_ITEM_PRICE, itemDTO.getItemPrice());
         // Inserting Row
-        return db.insert(TABLE_ITEMS, null, values);
+        long value = db.insert(TABLE_ITEMS, null, values);
+        return value == -1 ? false : true;
     }
 
     /**

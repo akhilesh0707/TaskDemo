@@ -36,7 +36,7 @@ public class DataManager implements UserRepository, ItemRepository {
     }
 
     @Override
-    public long insertItem(ItemDTO itemDTO) {
+    public boolean insertItem(ItemDTO itemDTO) {
         return mDbHelper.addItemToTable(itemDTO);
     }
 

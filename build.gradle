@@ -1,14 +1,13 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    
+
     repositories {
         google()
         jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
-        
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -28,16 +27,29 @@ allprojects {
         myTargetSdkVersion = 26
         myCompileSdkVersion = 26
 
+        //Test Runner
+        mTestRunnerVersion="1.0.1"
+
+        // Espresso Core
+        mEspressoVersion = "3.0.1"
+
+        // Constraint Layout
+        mConstraintVersion = "1.0.2"
+
         // Butter Knife
         mButterKnifeVersion = "8.8.1"
 
         // Mockito
         mMockitoVersion = "2.7.22"
         mMockitoAndroidVersion = "2.7.22"
+        mJunitVersion = "4.12"
 
         // Dagger 2
-        mDagger2Version="2.13"
+        mDagger2Version = "2.13"
 
+        //Rx Java,Android
+        mRxJavaVersion = "2.1.1"
+        mRxAndroidVersion = "2.0.1"
 
     }
 

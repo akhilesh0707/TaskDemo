@@ -24,5 +24,7 @@
     <string name="add_an_item_record_add_successfully">Item add successfully</string>
     <string name="add_an_item_record_add_fail">Item add failed</string>
     <string name="add_an_item_record_delete_fail">Item delete failed</string>
+    <string name="add_an_item_record_no_product_barcode">No product barcode</string>
+    <string name="add_an_item_record_no_item_type">No item types</string>
 
 </resources>
