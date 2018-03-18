@@ -1,20 +1,19 @@
 package com.tesco.sapient.main;
 
-import android.util.Log;
-
 import com.tesco.sapient.db.DataManager;
-import com.tesco.sapient.db.DatabaseHandler;
-import com.tesco.sapient.db.ItemRepository;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
-import com.tesco.sapient.dto.ProductDto;
+import com.tesco.sapient.dto.ProductDTO;
 
 import java.util.List;
 
 /**
- * Created by akhpatil on 3/16/2018.
+ * MainActivityPresenter to manage View and Business logic(Data model)
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public class MainActivityPresenter {
 
     private MainActivityView view;
@@ -44,7 +43,7 @@ public class MainActivityPresenter {
     }
 
     public void getProductBarCodes() {
-        List<ProductDto> productBarCodeList = dataManager.getProductBarCodeList();
+        List<ProductDTO> productBarCodeList = dataManager.getProductBarCodeList();
         if (productBarCodeList.size() > 0) {
             view.productBarCodeList(productBarCodeList);
         } else {

@@ -27,7 +27,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class LoginActivity extends AppCompatActivity implements LoginView {
+/**
+ * LoginActivity or UI
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
+ */
+public class LoginActivityActivity extends AppCompatActivity implements LoginActivityView {
 
     private LoginPresenter presenter;
     private Context context;

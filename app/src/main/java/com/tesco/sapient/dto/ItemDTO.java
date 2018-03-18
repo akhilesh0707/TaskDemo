@@ -1,9 +1,12 @@
 package com.tesco.sapient.dto;
 
 /**
- * Created by Aki on 3/17/2018.
+ * ItemDTO POJO class to manage Items
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public class ItemDTO {
     private int id;
     private int itemBarCode;

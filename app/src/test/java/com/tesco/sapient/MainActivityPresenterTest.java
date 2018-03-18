@@ -3,10 +3,7 @@ package com.tesco.sapient;
 import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
-import com.tesco.sapient.dto.ProductDto;
-import com.tesco.sapient.dto.UserDTO;
-import com.tesco.sapient.login.LoginPresenter;
-import com.tesco.sapient.login.LoginView;
+import com.tesco.sapient.dto.ProductDTO;
 import com.tesco.sapient.main.MainActivityPresenter;
 import com.tesco.sapient.main.MainActivityView;
 
@@ -16,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -39,7 +35,7 @@ public class MainActivityPresenterTest {
     private MainActivityPresenter presenter;
     private List<ItemTypeDTO> itemTypeDTOList = Arrays.asList(new ItemTypeDTO(), new ItemTypeDTO(), new ItemTypeDTO());
     private List<ItemDTO> itemDTOList = Arrays.asList(new ItemDTO(), new ItemDTO(), new ItemDTO());
-    private List<ProductDto> productBarCodeList = Arrays.asList(new ProductDto(), new ProductDto(), new ProductDto());
+    private List<ProductDTO> productBarCodeList = Arrays.asList(new ProductDTO(), new ProductDTO(), new ProductDTO());
 
     @Before
     public void setUp() throws Exception {

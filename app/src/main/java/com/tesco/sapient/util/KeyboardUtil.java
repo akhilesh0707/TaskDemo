@@ -8,6 +8,13 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+/**
+ * KeyBoard utility class to manger soft keyboard
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
+ */
 public class KeyboardUtil {
 
     /**

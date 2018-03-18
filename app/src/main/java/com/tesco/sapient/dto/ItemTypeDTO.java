@@ -1,12 +1,16 @@
 package com.tesco.sapient.dto;
 
 /**
- * Created by Aki on 3/16/2018.
+ * ItemTypeDTO POJO class to manage Item type
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public class ItemTypeDTO {
     private int id;
     private String name;
+
     public ItemTypeDTO() {
     }
 

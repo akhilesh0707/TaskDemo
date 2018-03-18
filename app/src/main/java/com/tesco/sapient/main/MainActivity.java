@@ -1,6 +1,7 @@
 package com.tesco.sapient.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
@@ -30,8 +34,9 @@ import com.tesco.sapient.di.component.DaggerActivityComponent;
 import com.tesco.sapient.di.module.ActivityModule;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
-import com.tesco.sapient.dto.ProductDto;
+import com.tesco.sapient.dto.ProductDTO;
 import com.tesco.sapient.dto.UserDTO;
+import com.tesco.sapient.login.LoginActivityActivity;
 import com.tesco.sapient.main.adapter.ItemAdapter;
 import com.tesco.sapient.main.adapter.OnItemClickListener;
 import com.tesco.sapient.util.CollapseExpandAnimation;
@@ -46,6 +51,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+/**
+ * MainActivity or UI
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
+ */
 public class MainActivity extends AppCompatActivity implements MainActivityView, OnItemClickListener {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -115,8 +127,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         getActivityComponent().inject(this);
         // Initializing Presenter
         presenter = new MainActivityPresenter(this, mDataManager);
-
-        Log.d(TAG, "UserDto" + userDTO.toString());
     }
 
 
@@ -138,6 +148,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         editTextAmountSingle.addTextChangedListener(watcher);
         editTextPrice.addTextChangedListener(watcher);
         buttonSubmit.setEnabled(false);
+
+        // Toolbar and title settings
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @OnClick(R.id.buttonAddItem)
@@ -180,6 +196,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+    }
+
+    /**
+     * the menu layout has the 'add/new' menu item
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // action with ID action_refresh was selected
+            case R.id.menuLogout:
+                startActivity(new Intent(context, LoginActivityActivity.class));
+                finish();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -232,16 +272,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
-    public void productBarCodeList(List<ProductDto> list) {
+    public void productBarCodeList(List<ProductDTO> list) {
         final ProductAutocompleteAdapter adapter = new ProductAutocompleteAdapter(this, list);
         editTextProductCode.setThreshold(1);
         editTextProductCode.setAdapter(adapter);
         editTextProductCode.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ProductDto productDto = adapter.getItem(position);
-                editTextProductCode.setText(String.valueOf(productDto.getBarCode()));
-                editTextPrice.setText(String.valueOf(productDto.getPrice()));
+                ProductDTO productDTO = adapter.getItem(position);
+                editTextProductCode.setText(String.valueOf(productDTO.getBarCode()));
+                editTextPrice.setText(String.valueOf(productDTO.getPrice()));
             }
         });
     }

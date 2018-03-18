@@ -3,7 +3,11 @@ package com.tesco.sapient.di;
 import javax.inject.Qualifier;
 
 /**
- * Created by akhpatil on 3/13/2018.
+ * Application Context
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
 @Qualifier
 public @interface ApplicationContext {

@@ -6,9 +6,12 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 
 /**
- * Created by Aki on 3/17/2018.
+ * CollapseExpandAnimation
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public class CollapseExpandAnimation {
     public static void expandOrCollapse(final View v, String exp_or_colpse) {
         TranslateAnimation anim = null;

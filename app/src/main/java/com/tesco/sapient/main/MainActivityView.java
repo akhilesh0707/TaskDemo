@@ -2,14 +2,16 @@ package com.tesco.sapient.main;
 
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
-import com.tesco.sapient.dto.ProductDto;
+import com.tesco.sapient.dto.ProductDTO;
 
 import java.util.List;
-
 /**
- * Created by akhpatil on 3/16/2018.
+ * Item Repository interface to handle items and product barcode DB operation
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public interface MainActivityView {
 
     void fillAddItemSpinner(List<ItemTypeDTO> list);
@@ -26,7 +28,7 @@ public interface MainActivityView {
 
     void noItemsErrorMessage();
 
-    void productBarCodeList(List<ProductDto> list);
+    void productBarCodeList(List<ProductDTO> list);
 
     void noProductBarCodeErrorMessage();
 

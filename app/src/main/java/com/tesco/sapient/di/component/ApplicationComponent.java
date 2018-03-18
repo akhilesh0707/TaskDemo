@@ -12,6 +12,13 @@ import com.tesco.sapient.db.DataManager;
 
 import dagger.Component;
 
+/**
+ * Application Component
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
+ */
 @AppScope
 @Component(modules = ApplicationModule.class)
 public interface ApplicationComponent {
@@ -26,5 +33,4 @@ public interface ApplicationComponent {
     DataManager getDataManager();
 
     DatabaseHandler getDbHelper();
-
 }

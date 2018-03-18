@@ -1,9 +1,12 @@
 package com.tesco.sapient.dto;
 
 /**
- * Created by akhpatil on 3/16/2018.
+ * UserDTO POJO class to manage User object
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public class UserDTO {
     private int userId;
     private String userName;

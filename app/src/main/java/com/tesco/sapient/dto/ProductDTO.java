@@ -1,19 +1,22 @@
 package com.tesco.sapient.dto;
 
 /**
- * Created by Aki on 3/17/2018.
+ * ProjectDTO POJO class to manage product barcode
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
-public class ProductDto {
+public class ProductDTO {
     private int id;
     private String name;
     private int barCode;
     private double price;
 
-    public ProductDto() {
+    public ProductDTO() {
     }
 
-    public ProductDto(String name, int barCode, double price) {
+    public ProductDTO(String name, int barCode, double price) {
         this.name = name;
         this.barCode = barCode;
         this.price = price;

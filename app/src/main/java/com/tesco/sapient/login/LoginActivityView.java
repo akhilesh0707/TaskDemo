@@ -3,10 +3,13 @@ package com.tesco.sapient.login;
 import com.tesco.sapient.dto.UserDTO;
 
 /**
- * Created by akhpatil on 3/16/2018.
+ * LoginActivityView
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
-public interface LoginView {
+public interface LoginActivityView {
 
     void loginSuccess(UserDTO userDTO);
 

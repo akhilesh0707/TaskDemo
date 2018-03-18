@@ -12,13 +12,21 @@ import com.tesco.sapient.di.AppScope;
 import com.tesco.sapient.di.ApplicationContext;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
-import com.tesco.sapient.dto.ProductDto;
+import com.tesco.sapient.dto.ProductDTO;
 import com.tesco.sapient.dto.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+/**
+ * DataBase class to handle all database operation (CRUD)
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
+ */
 
 @AppScope
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -328,21 +336,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      *
      * @return dummy Product barcode record list
      */
-    private List<ProductDto> dummyProductBarcodeList() {
-        List<ProductDto> list = new ArrayList<>();
-        ProductDto productDto = null;
-        productDto = new ProductDto("Candy mix", 1234, 22.90);
-        list.add(productDto);
-        productDto = new ProductDto("Dell damaged laptop", 1235, 43.00);
-        list.add(productDto);
-        productDto = new ProductDto("HP damaged laptop", 1236, 34.60);
-        list.add(productDto);
-        productDto = new ProductDto("Cool mint expired", 1237, 80.89);
-        list.add(productDto);
-        productDto = new ProductDto("Tread jam mix", 1238, 77.10);
-        list.add(productDto);
-        productDto = new ProductDto("Apple Iphone damaged", 1239, 77.90);
-        list.add(productDto);
+    private List<ProductDTO> dummyProductBarcodeList() {
+        List<ProductDTO> list = new ArrayList<>();
+        ProductDTO productDTO = null;
+        productDTO = new ProductDTO("Candy mix", 1234, 22.90);
+        list.add(productDTO);
+        productDTO = new ProductDTO("Dell damaged laptop", 1235, 43.00);
+        list.add(productDTO);
+        productDTO = new ProductDTO("HP damaged laptop", 1236, 34.60);
+        list.add(productDTO);
+        productDTO = new ProductDTO("Cool mint expired", 1237, 80.89);
+        list.add(productDTO);
+        productDTO = new ProductDTO("Tread jam mix", 1238, 77.10);
+        list.add(productDTO);
+        productDTO = new ProductDTO("Apple Iphone damaged", 1239, 77.90);
+        list.add(productDTO);
         return list;
     }
 
@@ -352,14 +360,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param list
      * @param db
      */
-    public void insertBarcodeProduct(List<ProductDto> list, SQLiteDatabase db) {
+    public void insertBarcodeProduct(List<ProductDTO> list, SQLiteDatabase db) {
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
-            for (ProductDto productDto : list) {
-                values.put(KEY_PRODUCT_NAME, productDto.getName());
-                values.put(KEY_PRODUCT_BARCODE, productDto.getBarCode());
-                values.put(KEY_PRODUCT_PRICE, productDto.getPrice());
+            for (ProductDTO productDTO : list) {
+                values.put(KEY_PRODUCT_NAME, productDTO.getName());
+                values.put(KEY_PRODUCT_BARCODE, productDTO.getBarCode());
+                values.put(KEY_PRODUCT_PRICE, productDTO.getPrice());
                 db.insert(TABLE_PRODUCT, null, values);
             }
             db.setTransactionSuccessful();
@@ -372,10 +380,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * ProductBarCode list for AutoComplete
      *
-     * @return ProductDto list
+     * @return ProductDTO list
      */
-    public List<ProductDto> getProductBarCodes() {
-        List<ProductDto> productDtoList = new ArrayList<>();
+    public List<ProductDTO> getProductBarCodes() {
+        List<ProductDTO> productDTOList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_PRODUCT;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -385,17 +393,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                ProductDto productDto = new ProductDto();
-                productDto.setId(cursor.getInt(0));
-                productDto.setName(cursor.getString(1));
-                productDto.setBarCode(cursor.getInt(2));
-                productDto.setPrice(cursor.getDouble(3));
+                ProductDTO productDTO = new ProductDTO();
+                productDTO.setId(cursor.getInt(0));
+                productDTO.setName(cursor.getString(1));
+                productDTO.setBarCode(cursor.getInt(2));
+                productDTO.setPrice(cursor.getDouble(3));
                 // Adding Items to list
-                productDtoList.add(productDto);
+                productDTOList.add(productDTO);
             } while (cursor.moveToNext());
         }
         // return Item list
-        return productDtoList;
+        return productDTOList;
     }
 
 

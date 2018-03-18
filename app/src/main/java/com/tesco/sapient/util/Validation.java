@@ -1,9 +1,12 @@
 package com.tesco.sapient.util;
 
 /**
- * Created by akhpatil on 3/16/2018.
+ * Validation class to validate form field like empty email etc
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 public class Validation {
 
     /**

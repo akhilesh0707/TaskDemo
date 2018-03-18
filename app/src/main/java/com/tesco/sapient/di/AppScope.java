@@ -6,9 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Created by akhpatil on 3/13/2018.
+ * Application Scope DI
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
  */
-
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AppScope {

@@ -11,6 +11,13 @@ import com.tesco.sapient.dto.UserDTO;
 
 import javax.inject.Inject;
 
+/**
+ * Application class
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-17
+ */
 public class MyApplication extends Application {
 
     private static final String TAG = MyApplication.class.getSimpleName();
@@ -30,18 +37,39 @@ public class MyApplication extends Application {
         applicationComponent.inject(this);
     }
 
+    /**
+     * ApplicationComponent to DI
+     *
+     * @return
+     */
     public ApplicationComponent getComponent() {
         return applicationComponent;
     }
 
+    /**
+     * User object
+     *
+     * @return
+     */
     public UserDTO getUser() {
         return userDTO;
     }
 
+    /**
+     * Set User or Initialize user object
+     *
+     * @param userDTO
+     */
     public void setUser(UserDTO userDTO) {
         this.userDTO = userDTO;
     }
 
+    /**
+     * Get Application object
+     *
+     * @param context
+     * @return
+     */
     public static MyApplication get(Context context) {
         return (MyApplication) context.getApplicationContext();
     }
