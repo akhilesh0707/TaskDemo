@@ -124,17 +124,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Check user exists or not in user table
      *
-     * @param userDTO User object which trying to login
+     * @param username
+     * @param password
      * @return UserDTO is record found in DB table
      */
-    public UserDTO checkUser(UserDTO userDTO) {
+    public UserDTO checkUser(String username, String password) {
         Cursor cursor = null;
         SQLiteDatabase db = null;
         UserDTO user = null;
         try {
             db = this.getReadableDatabase();
             String query = "SELECT * FROM " + TABLE_USER + " WHERE " + KEY_USERNAME + "=? AND " + KEY_PASSWORD + "=?";
-            cursor = db.rawQuery(query, new String[]{userDTO.getUserName(), userDTO.getPassword()});
+            cursor = db.rawQuery(query, new String[]{username, password});
             Log.d(TAG, DatabaseUtils.dumpCursorToString(cursor));
             if (cursor != null && cursor.getCount() > 0) {
                 if (cursor.moveToFirst()) {

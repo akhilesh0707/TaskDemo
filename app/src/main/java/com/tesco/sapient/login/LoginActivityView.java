@@ -11,6 +11,14 @@ import com.tesco.sapient.dto.UserDTO;
  */
 public interface LoginActivityView {
 
+    String getUsername();
+
+    void showUsernameErrorMessage(int resId);
+
+    String getPassword();
+
+    void showPasswordErrorMessage(int resId);
+
     void loginSuccess(UserDTO userDTO);
 
     void loginFailed();

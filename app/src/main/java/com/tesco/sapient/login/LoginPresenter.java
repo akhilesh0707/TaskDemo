@@ -1,5 +1,6 @@
 package com.tesco.sapient.login;
 
+import com.tesco.sapient.R;
 import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.dto.UserDTO;
 
@@ -27,15 +28,29 @@ public class LoginPresenter {
 
     /**
      * Login method to check user exists or not in Database
-     *
-     * @param user
      */
-    public void login(UserDTO user) {
-        UserDTO userDTO = dataManager.authenticate(user);
+    public void login() {
+        String username = view.getUsername();
+
+        if (username.isEmpty()) {
+            view.showUsernameErrorMessage(R.string.login_validation_error_message_username);
+            return;
+        }
+
+        String password = view.getPassword();
+        if (password.isEmpty()) {
+            view.showPasswordErrorMessage(R.string.login_validation_error_message_password);
+            return;
+        }
+
+        UserDTO userDTO = dataManager.authenticate(username,password);
         if (userDTO != null) {
             view.loginSuccess(userDTO);
+            return;
         } else {
             view.loginFailed();
+            return;
         }
+
     }
 }

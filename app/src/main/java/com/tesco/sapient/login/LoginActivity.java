@@ -34,7 +34,7 @@ import butterknife.Unbinder;
  * @version 1.0
  * @since 2018-03-17
  */
-public class LoginActivityActivity extends AppCompatActivity implements LoginActivityView {
+public class LoginActivity extends AppCompatActivity implements LoginActivityView {
 
     private LoginPresenter presenter;
     private Context context;
@@ -79,20 +79,29 @@ public class LoginActivityActivity extends AppCompatActivity implements LoginAct
     public void loginButtonClick(View view) {
         // Hide keyboard after login button click
         KeyboardUtil.hideSoftKeyboard(context);
-        String userName = editTextUserName.getText().toString().trim();
-        String userPassword = editTextPassword.getText().toString().trim();
-        if (!Validation.isEmpty(userName)) {
-            editTextUserName.setError(context.getText(R.string.login_validation_error_message_username));
-            editTextUserName.requestFocus();
-        } else if (!Validation.isEmpty(userPassword)) {
-            editTextPassword.setError(context.getText(R.string.login_validation_error_message_password));
-            editTextPassword.requestFocus();
-        } else {
-            UserDTO user = new UserDTO();
-            user.setUserName(userName);
-            user.setPassword(userPassword);
-            presenter.login(user);
-        }
+        presenter.login();
+    }
+
+    @Override
+    public String getUsername() {
+        return editTextUserName.getText().toString().trim();
+    }
+
+    @Override
+    public void showUsernameErrorMessage(int resId) {
+        editTextUserName.setError(getString(resId));
+        editTextUserName.requestFocus();
+    }
+
+    @Override
+    public String getPassword() {
+        return editTextPassword.getText().toString().trim();
+    }
+
+    @Override
+    public void showPasswordErrorMessage(int resId) {
+        editTextPassword.setError(getString(resId));
+        editTextPassword.requestFocus();
     }
 
     @Override

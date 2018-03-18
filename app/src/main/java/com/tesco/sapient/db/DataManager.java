@@ -42,12 +42,14 @@ public class DataManager implements UserRepository, ItemRepository {
     /**
      * Check user authentication on Database
      *
-     * @param userDTO
-     * @return UserDTO
+     * @param username
+     * @param password
+     * @return
      */
+
     @Override
-    public UserDTO authenticate(UserDTO userDTO) {
-        return mDbHelper.checkUser(userDTO);
+    public UserDTO authenticate(String username, String password) {
+        return mDbHelper.checkUser(username, password);
     }
 
     /**

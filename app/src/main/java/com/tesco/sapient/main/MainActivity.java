@@ -36,7 +36,7 @@ import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDTO;
 import com.tesco.sapient.dto.UserDTO;
-import com.tesco.sapient.login.LoginActivityActivity;
+import com.tesco.sapient.login.LoginActivity;
 import com.tesco.sapient.main.adapter.ItemAdapter;
 import com.tesco.sapient.main.adapter.OnItemClickListener;
 import com.tesco.sapient.util.CollapseExpandAnimation;
@@ -213,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         switch (item.getItemId()) {
             // action with ID action_refresh was selected
             case R.id.menuLogout:
-                startActivity(new Intent(context, LoginActivityActivity.class));
+                startActivity(new Intent(context, LoginActivity.class));
                 finish();
                 break;
             default:

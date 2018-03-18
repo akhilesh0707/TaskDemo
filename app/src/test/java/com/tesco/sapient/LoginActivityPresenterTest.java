@@ -5,6 +5,7 @@ import com.tesco.sapient.login.LoginActivityView;
 import com.tesco.sapient.login.LoginPresenter;
 import com.tesco.sapient.dto.UserDTO;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,23 +37,55 @@ public class LoginActivityPresenterTest {
     }
 
     @Test
-    public void userSuccessfullyLoginUsingDummyRecord() {
+    public void shouldShowUsernameErrorMessageIsEmpty() {
         //Given
-        when(dataManager.authenticate(user)).thenReturn(user);
+        when(view.getUsername()).thenReturn("");
         //When
-        presenter.login(user);
+        presenter.login();
+        //Then
+        verify(view).showUsernameErrorMessage(R.string.login_validation_error_message_username);
+    }
+
+    @Test
+    public void shouldShowPasswordErrorMessageIsEmpty() {
+        //Given
+        when(view.getUsername()).thenReturn("sid");
+        when(view.getPassword()).thenReturn("");
+        //When
+        presenter.login();
+        //Then
+        verify(view).showPasswordErrorMessage(R.string.login_validation_error_message_password);
+    }
+
+    @Test
+    public void shouldShowMainActivityWhenUsernameAndPasswordIsCorrect() throws Exception {
+        //Given
+        when(view.getUsername()).thenReturn("sid");
+        when(view.getPassword()).thenReturn("sid");
+        when(dataManager.authenticate("sid", "sid")).thenReturn(user);
+        //When
+        presenter.login();
         //Then
         verify(view).loginSuccess(user);
     }
 
     @Test
-    public void useFailLoginUsingDummyRecord() {
+    public void shouldShowLoginErrorWhenUsernameAndPasswordAreInvalid() throws Exception {
         //Given
-        when(dataManager.authenticate(user)).thenReturn(null);
+        when(view.getUsername()).thenReturn("sid");
+        when(view.getPassword()).thenReturn("sid");
+        when(dataManager.authenticate("sid", "sid")).thenReturn(null);
         //When
-        presenter.login(user);
+        presenter.login();
         //Then
         verify(view).loginFailed();
+    }
+
+
+    @After
+    public void tearDown() throws Exception {
+        presenter = null;
+        user = null;
     }
 
 

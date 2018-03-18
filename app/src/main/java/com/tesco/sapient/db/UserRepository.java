@@ -10,5 +10,5 @@ import com.tesco.sapient.dto.UserDTO;
  * @since 2018-03-17
  */
 public interface UserRepository {
-    UserDTO authenticate(UserDTO userDTO);
+    UserDTO authenticate(String username, String password);
 }
