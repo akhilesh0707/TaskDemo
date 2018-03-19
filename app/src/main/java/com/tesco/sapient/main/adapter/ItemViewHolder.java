@@ -16,12 +16,17 @@ import java.text.DecimalFormat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+/**
+ * ItemViewHolder to display no records
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-18
+ */
 public class ItemViewHolder extends RecyclerView.ViewHolder {
-
 
     @BindView(R.id.swipeLayout)
     SwipeLayout swipeLayout;
-
     @BindView(R.id.textViewProductName)
     TextView textViewProductName;
     @BindView(R.id.textViewBarCode)
@@ -37,6 +42,12 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
     private OnItemClickListener onItemClickListener;
 
+    /**
+     * ItemViewHolder constructor and initialize view and item click listener
+     *
+     * @param itemView
+     * @param onItemClickListener
+     */
     public ItemViewHolder(View itemView, OnItemClickListener onItemClickListener) {
         super(itemView);
         this.onItemClickListener = onItemClickListener;
@@ -44,6 +55,11 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
     }
 
+    /**
+     * Method is used to bind data to View
+     *
+     * @param itemDTO
+     */
     public void bind(final ItemDTO itemDTO) {
         textViewProductName.setText(itemDTO.getItemTypeName());
         textViewBarCode.setText(String.valueOf(itemDTO.getItemBarCode()));

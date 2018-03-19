@@ -1,6 +1,5 @@
 package com.tesco.sapient.main.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,13 @@ import com.tesco.sapient.dto.ItemDTO;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ItemAdapter to display no records
+ *
+ * @author Akhilesh Patil
+ * @version 1.0
+ * @since 2018-03-18
+ */
 public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> implements Filterable {
 
     private List<ItemDTO> itemDTOList;
@@ -24,11 +30,21 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
     private static final int VIEW_TYPE_DATA = 1;
     private static final int VIEW_TYPE_EMPTY = 2;
 
+    /**
+     * ItemAdapter constructor to initialize ItemList
+     *
+     * @param itemDTOList
+     */
     public ItemAdapter(List<ItemDTO> itemDTOList) {
         this.itemDTOList = itemDTOList;
         this.itemDTOListOrigional = itemDTOList;
     }
 
+    /**
+     * Method is used to update the ItemList on this adapter
+     *
+     * @param itemDTOList
+     */
     public void setDataChange(List<ItemDTO> itemDTOList) {
         this.itemDTOList = itemDTOList;
         this.itemDTOListOrigional = itemDTOList;
@@ -36,6 +52,11 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
         notifyDataSetChanged();
     }
 
+    /**
+     * Method is used to remove Item from ItemList and update UI
+     *
+     * @param position
+     */
     public void setItemRemoved(int position) {
         itemDTOList.remove(position);
         notifyItemRemoved(position);
@@ -43,10 +64,22 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
         notifyItemRangeChanged(position, itemDTOList.size());
     }
 
+    /**
+     * Method is used to set Click Listener
+     *
+     * @param itemClickListener
+     */
     public void setClickListener(OnItemClickListener itemClickListener) {
         this.clickListener = itemClickListener;
     }
 
+    /**
+     * Method is used to initialize xml item and inflate view to ViewHolder
+     *
+     * @param parent
+     * @param viewType
+     * @return
+     */
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
@@ -61,6 +94,12 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
         return viewHolder;
     }
 
+    /**
+     * Method is used to bind data to ViewHolder
+     *
+     * @param viewHolder
+     * @param position
+     */
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
 
@@ -76,6 +115,11 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
         }
     }
 
+    /**
+     * Method is used to get total no. of record in List
+     *
+     * @return
+     */
     @Override
     public int getItemCount() {
         if (itemDTOList != null) {
@@ -88,6 +132,12 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
         return 1;
     }
 
+    /**
+     * Method is used to get ItemType and decide which ViewHolder should display on screen
+     *
+     * @param position
+     * @return
+     */
     @Override
     public int getItemViewType(int position) {
         if (itemDTOList.size() == 0) {
@@ -97,16 +147,30 @@ public class ItemAdapter extends RecyclerSwipeAdapter<RecyclerView.ViewHolder> i
         }
     }
 
+    /**
+     * Method is used to return Swipe resource id
+     *
+     * @param position
+     * @return
+     */
     @Override
     public int getSwipeLayoutResourceId(int position) {
         return R.id.swipeLayout;
     }
 
+    /**
+     * Method is used to get FilterObject
+     *
+     * @return
+     */
     @Override
     public Filter getFilter() {
         return itemFilter;
     }
 
+    /**
+     * Filter object class
+     */
     private class EventFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
