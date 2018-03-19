@@ -8,6 +8,9 @@
     <string name="login_validation_error_message_username">Please enter username</string>
     <string name="login_validation_error_message_password">Please enter password</string>
     <string name="login_validation_error_invalid_user_or_password">Invalid username or password</string>
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+
 
     <!--Main Screen Constants-->
     <string name="main_activity_add_item_button_text">Add an item</string>
