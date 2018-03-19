@@ -102,6 +102,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private ActivityComponent activityComponent;
     private UserDTO userDTO;
 
+    /**
+     * Get component for dependency injection - dagger
+     *
+     * @return ActivityComponent
+     */
     public ActivityComponent getActivityComponent() {
         if (activityComponent == null) {
             activityComponent = DaggerActivityComponent.builder()
@@ -114,7 +119,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         return activityComponent;
     }
 
-
+    /**
+     * LifeCycle method to handle ui and other elements
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,7 +138,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         presenter = new MainActivityPresenter(this, mDataManager);
     }
 
-
+    /**
+     * OnResume Lifecycle method of activity
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -139,6 +150,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         presenter.getProductBarCodes();
     }
 
+    /**
+     * Set and init data to toolbar and other settings
+     *
+     * @param UserDTO
+     */
     public void init(UserDTO userDTO) {
         textViewTitle.setText(userDTO.getStoreName());
         textViewStoreId.setText(String.valueOf(userDTO.getStoreId()));
@@ -156,6 +172,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    /**
+     * Button hide show clicked
+     *
+     * @param view
+     */
     @OnClick(R.id.buttonAddItem)
     public void showAddItemClick(View view) {
         if (addItemView.isShown()) {
@@ -167,12 +188,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         }
     }
 
+    /**
+     * Add new item View cancel button click
+     *
+     * @param view
+     */
     @OnClick(R.id.buttonCancel)
     public void addItemCancelClick(View view) {
         buttonAddItem.setVisibility(View.VISIBLE);
         CollapseExpandAnimation.expandOrCollapse(addItemView, "collapse");
     }
 
+    /**
+     * Add item to database click
+     *
+     * @param view
+     */
     @OnClick(R.id.buttonSubmit)
     public void addItemClick(View view) {
         Log.d(TAG, "Add item clicked");
@@ -192,10 +223,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         presenter.addItem(itemDTO);
     }
 
+    /**
+     * OnDestroy method of activity to dispose objects
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        presenter = null;
     }
 
     /**
@@ -208,6 +243,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         return true;
     }
 
+    /**
+     * On menu item click handler
+     *
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -222,17 +263,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         return true;
     }
 
+    /**
+     * Fill the items to spinner
+     *
+     * @param list
+     */
     @Override
     public void fillAddItemSpinner(List<ItemTypeDTO> list) {
         CustomSpinnerAdapter customSpinnerAdapter = new CustomSpinnerAdapter(context, list);
         spinnerItemType.setAdapter(customSpinnerAdapter);
     }
 
+    /**
+     * No Item type record found in database
+     *
+     * @param list
+     */
     @Override
     public void noItemTypeRecord(List<ItemTypeDTO> list) {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_no_item_type), Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Method used to show item is added successfully to database
+     */
     @Override
     public void itemAddSuccessfullyMessage() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_add_successfully), Snackbar.LENGTH_LONG).show();
@@ -240,11 +294,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         presenter.getItems();
     }
 
+    /**
+     * Method used to show error message when their is error in insertion of item
+     */
     @Override
     public void itemAddErrorMessage() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_add_fail), Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Method used to reset add item form after adding item to database
+     */
     @Override
     public void resetAddItemForm() {
         editTextProductCode.setText(null);
@@ -253,6 +313,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         editTextPrice.setText(null);
     }
 
+    /**
+     * Method used to show items to list on UI
+     *
+     * @param itemDTOList
+     */
     @Override
     public void showItems(List<ItemDTO> itemDTOList) {
         textViewNoRecord.setVisibility(View.GONE);
@@ -265,12 +330,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         recyclerViewItem.setAdapter(itemAdapter);
     }
 
+    /**
+     * Method used to show error message it no item record found in database
+     */
     @Override
     public void noItemsErrorMessage() {
         textViewNoRecord.setVisibility(View.VISIBLE);
         recyclerViewItem.setVisibility(View.GONE);
     }
 
+    /**
+     * Method to show product in AutoComplete
+     *
+     * @param list
+     */
     @Override
     public void productBarCodeList(List<ProductDTO> list) {
         final ProductAutocompleteAdapter adapter = new ProductAutocompleteAdapter(this, list);
@@ -286,21 +359,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         });
     }
 
+    /**
+     * Method is used to show error message is no product barcode in database
+     */
     @Override
     public void noProductBarCodeErrorMessage() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_no_product_barcode), Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Method used to show delete message if record is deleted from database
+     */
     @Override
     public void itemDeleteSuccessfully() {
         presenter.getItems();
     }
 
+    /**
+     * Method is used to show delete error message is record is not deleted from database
+     */
     @Override
     public void itemDeleteError() {
         Snackbar.make(coordinatorLayout, context.getText(R.string.add_an_item_record_delete_fail), Snackbar.LENGTH_LONG).show();
     }
 
+    /**
+     * Method is used to add record to filter spinner
+     *
+     * @param list
+     */
     @Override
     public void fillFilterSpinner(List<ItemTypeDTO> list) {
         list.add(0, new ItemTypeDTO("All"));
@@ -324,6 +411,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         });
     }
 
+    /**
+     * Method is used to show error message is filter record is not found in database
+     *
+     * @param list
+     */
     @Override
     public void fillFilterNoRecordError(List<ItemTypeDTO> list) {
         list.add(0, new ItemTypeDTO("All"));
@@ -331,13 +423,20 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         spinnerFilter.setAdapter(customSpinnerAdapter);
     }
 
+    /**
+     * Method is used to remove item from database and perform presenter delete method
+     *
+     * @param itemDTO
+     */
     @Override
     public void onItemRemoveClicked(ItemDTO itemDTO) {
         Log.d(TAG, "Delete item: " + itemDTO.getId());
         presenter.deleteItem(itemDTO);
     }
 
-
+    /**
+     * Watcher class is used to enable or disable submit button
+     */
     private final TextWatcher watcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

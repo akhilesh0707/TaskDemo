@@ -19,11 +19,20 @@ public class MainActivityPresenter {
     private MainActivityView view;
     private DataManager dataManager;
 
+    /**
+     * Constructor to initialize MainActivityView and DataManger
+     *
+     * @param view
+     * @param dataManager
+     */
     public MainActivityPresenter(MainActivityView view, DataManager dataManager) {
         this.view = view;
         this.dataManager = dataManager;
     }
 
+    /**
+     * Method is used to get ItemTypes from Database
+     */
     public void getItemTypes() {
         List<ItemTypeDTO> typeDTOList = dataManager.getItemTypes();
         if (typeDTOList.size() > 0) {
@@ -33,6 +42,9 @@ public class MainActivityPresenter {
         }
     }
 
+    /**
+     * Method is used to get all items from database
+     */
     public void getItems() {
         List<ItemDTO> itemDTOList = dataManager.getItemList();
         if (itemDTOList.size() > 0) {
@@ -42,6 +54,9 @@ public class MainActivityPresenter {
         }
     }
 
+    /**
+     * Method is used to get all ProductBarCode from database
+     */
     public void getProductBarCodes() {
         List<ProductDTO> productBarCodeList = dataManager.getProductBarCodeList();
         if (productBarCodeList.size() > 0) {
@@ -51,6 +66,11 @@ public class MainActivityPresenter {
         }
     }
 
+    /**
+     * Method is used to add item to database
+     *
+     * @param itemDTO
+     */
     public void addItem(ItemDTO itemDTO) {
         boolean insertStatus = dataManager.insertItem(itemDTO);
         if (!insertStatus) {
@@ -60,6 +80,11 @@ public class MainActivityPresenter {
         }
     }
 
+    /**
+     * Method is used to delete item from Database
+     *
+     * @param itemDTO
+     */
     public void deleteItem(ItemDTO itemDTO) {
         int deleteStatus = dataManager.deleteItemFromDB(itemDTO);
         if (deleteStatus == 1) {
@@ -69,6 +94,9 @@ public class MainActivityPresenter {
         }
     }
 
+    /**
+     * Method is used to get List of ItemTypes
+     */
     public void getFilterItemTypes() {
         List<ItemTypeDTO> typeDTOList = dataManager.getItemTypes();
         if (typeDTOList.size() > 1) {
