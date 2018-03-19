@@ -1,4 +1,4 @@
-package com.tesco.sapient.main.adapter;
+package com.tesco.sapient.waste.adapter;
 
 import com.tesco.sapient.dto.ItemDTO;
 

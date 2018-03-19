@@ -1,7 +1,7 @@
 package com.tesco.sapient;
 
 import com.tesco.sapient.db.DataManager;
-import com.tesco.sapient.login.LoginActivityView;
+import com.tesco.sapient.login.LoginView;
 import com.tesco.sapient.login.LoginPresenter;
 import com.tesco.sapient.dto.UserDTO;
 
@@ -21,10 +21,10 @@ import static org.mockito.Mockito.when;
  */
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginActivityPresenterTest {
+public class LoginPresenterTest {
 
     @Mock
-    LoginActivityView view;
+    LoginView view;
     @Mock
     DataManager dataManager;
     private LoginPresenter presenter;

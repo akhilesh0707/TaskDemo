@@ -4,8 +4,8 @@ import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDTO;
-import com.tesco.sapient.main.MainActivityPresenter;
-import com.tesco.sapient.main.MainActivityView;
+import com.tesco.sapient.waste.WastePresenter;
+import com.tesco.sapient.waste.WasteView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,21 +25,21 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 //@RunWith(MockitoJUnitRunner.Silent.class)
-public class MainActivityPresenterTest {
+public class WastePresenterTest {
 
     @Mock
-    MainActivityView view;
+    WasteView view;
     @Mock
     DataManager dataManager;
 
-    private MainActivityPresenter presenter;
+    private WastePresenter presenter;
     private List<ItemTypeDTO> itemTypeDTOList = Arrays.asList(new ItemTypeDTO(), new ItemTypeDTO(), new ItemTypeDTO());
     private List<ItemDTO> itemDTOList = Arrays.asList(new ItemDTO(), new ItemDTO(), new ItemDTO());
     private List<ProductDTO> productBarCodeList = Arrays.asList(new ProductDTO(), new ProductDTO(), new ProductDTO());
 
     @Before
     public void setUp() throws Exception {
-        presenter = new MainActivityPresenter(view, dataManager);
+        presenter = new WastePresenter(view, dataManager);
     }
 
     @Test

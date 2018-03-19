@@ -191,11 +191,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         UserDTO userDTO = null;
         userDTO = new UserDTO("test", "test", 9001, "Record Wastage");
         list.add(userDTO);
-        userDTO = new UserDTO("akhilesh", "akhilesh", 9023, "Record Wastage One");
+        userDTO = new UserDTO("akhilesh", "akhilesh", 9023, "Record Wastage");
         list.add(userDTO);
-        userDTO = new UserDTO("sushant", "sushant", 9477, "Record Wastage Two");
+        userDTO = new UserDTO("sushant", "sushant", 9477, "Record Wastage");
         list.add(userDTO);
-        userDTO = new UserDTO("sid", "sid", 9901, "Record Wastage Thee");
+        userDTO = new UserDTO("sid", "sid", 9901, "Record Wastage");
         list.add(userDTO);
         return list;
     }

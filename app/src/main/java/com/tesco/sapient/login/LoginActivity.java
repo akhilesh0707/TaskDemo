@@ -20,10 +20,9 @@ import com.tesco.sapient.di.component.ActivityComponent;
 import com.tesco.sapient.di.component.DaggerActivityComponent;
 import com.tesco.sapient.di.module.ActivityModule;
 import com.tesco.sapient.db.DataManager;
-import com.tesco.sapient.main.MainActivity;
+import com.tesco.sapient.waste.WasteActivity;
 import com.tesco.sapient.dto.UserDTO;
 import com.tesco.sapient.util.KeyboardUtil;
-import com.tesco.sapient.util.Validation;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -42,7 +41,7 @@ import butterknife.Unbinder;
  * @version 1.0
  * @since 2018-03-17
  */
-public class LoginActivity extends AppCompatActivity implements LoginActivityView {
+public class LoginActivity extends AppCompatActivity implements LoginView {
 
     private LoginPresenter presenter;
     private Context context;
@@ -97,7 +96,7 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
     }
 
     /**
-     * Login button click
+     * LoginActivity button click
      *
      * @param view
      */
@@ -151,20 +150,20 @@ public class LoginActivity extends AppCompatActivity implements LoginActivityVie
     }
 
     /**
-     * Login success redirect to HomeActivity
+     * LoginActivity success redirect to HomeActivity
      *
      * @param userDTO
      */
     @Override
     public void loginSuccess(UserDTO userDTO) {
         MyApplication.get(context).setUser(userDTO);
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, WasteActivity.class);
         startActivity(intent);
         finish();
     }
 
     /**
-     * Login failed error message
+     * LoginActivity failed error message
      */
     @Override
     public void loginFailed() {

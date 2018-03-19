@@ -1,18 +1,7 @@
-package com.tesco.sapient.main.adapter;
+package com.tesco.sapient.waste.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import com.daimajia.swipe.SwipeLayout;
-import com.tesco.sapient.R;
-import com.tesco.sapient.dto.ItemDTO;
-
-import java.text.DecimalFormat;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * EmptyViewHolder to display no record message

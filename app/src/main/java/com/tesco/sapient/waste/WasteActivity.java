@@ -1,4 +1,4 @@
-package com.tesco.sapient.main;
+package com.tesco.sapient.waste;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,8 +37,8 @@ import com.tesco.sapient.dto.ItemTypeDTO;
 import com.tesco.sapient.dto.ProductDTO;
 import com.tesco.sapient.dto.UserDTO;
 import com.tesco.sapient.login.LoginActivity;
-import com.tesco.sapient.main.adapter.ItemAdapter;
-import com.tesco.sapient.main.adapter.OnItemClickListener;
+import com.tesco.sapient.waste.adapter.ItemAdapter;
+import com.tesco.sapient.waste.adapter.OnItemClickListener;
 import com.tesco.sapient.util.CollapseExpandAnimation;
 import com.tesco.sapient.util.KeyboardUtil;
 
@@ -52,16 +52,16 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
- * MainActivity or UI
+ * WasteActivity or UI
  *
  * @author Akhilesh Patil
  * @version 1.0
  * @since 2018-03-17
  */
-public class MainActivity extends AppCompatActivity implements MainActivityView, OnItemClickListener {
+public class WasteActivity extends AppCompatActivity implements WasteView, OnItemClickListener {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
-    private MainActivityPresenter presenter;
+    private static final String TAG = WasteActivity.class.getSimpleName();
+    private WastePresenter presenter;
     private Context context;
     private Unbinder unbinder;
     private ItemAdapter itemAdapter;
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         //Initialize DataBase
         getActivityComponent().inject(this);
         // Initializing Presenter
-        presenter = new MainActivityPresenter(this, mDataManager);
+        presenter = new WastePresenter(this, mDataManager);
     }
 
     /**

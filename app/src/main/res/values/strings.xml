@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Waste Management</string>
 
-    <!--Login Screen Constants-->
+    <!--LoginActivityogin Screen Constants-->
     <string name="login_username_hint_text">Username</string>
     <string name="login_password_hint_text">Password</string>
     <string name="login_button_test">Login</string>
@@ -11,10 +11,9 @@
     <string name="speech_prompt">Say something&#8230;</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
 
-
     <!--Main Screen Constants-->
     <string name="main_activity_add_item_button_text">Add an item</string>
-    <string name="main_activity_filter_no_record">No record found</string>
+    <string name="main_activity_filter_no_record">No records pending.</string>
     <string name="main_activity_filter_default_selected_text">All</string>
     <string name="main_activity_menu_logout_title">Logout</string>
 

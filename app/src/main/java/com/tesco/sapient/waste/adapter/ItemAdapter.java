@@ -1,4 +1,4 @@
-package com.tesco.sapient.main.adapter;
+package com.tesco.sapient.waste.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

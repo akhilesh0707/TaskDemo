@@ -2,9 +2,6 @@ package com.tesco.sapient;
 
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.tesco.sapient.login.LoginActivity;
 

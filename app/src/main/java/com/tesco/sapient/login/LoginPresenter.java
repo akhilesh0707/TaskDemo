@@ -5,14 +5,14 @@ import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.dto.UserDTO;
 
 /**
- * Login Presenter to manager view and business login (Model)
+ * LoginActivity Presenter to manager view and business login (Model)
  *
  * @author Akhilesh Patil
  * @version 1.0
  * @since 2018-03-17
  */
 public class LoginPresenter {
-    private LoginActivityView view;
+    private LoginView view;
     private DataManager dataManager;
 
     /**
@@ -21,13 +21,13 @@ public class LoginPresenter {
      * @param view
      * @param dataManager
      */
-    public LoginPresenter(LoginActivityView view, DataManager dataManager) {
+    public LoginPresenter(LoginView view, DataManager dataManager) {
         this.view = view;
         this.dataManager = dataManager;
     }
 
     /**
-     * Login method to check user exists or not in Database
+     * LoginActivity method to check user exists or not in Database
      */
     public void login() {
         String username = view.getUsername();
@@ -46,11 +46,10 @@ public class LoginPresenter {
         UserDTO userDTO = dataManager.authenticate(username,password);
         if (userDTO != null) {
             view.loginSuccess(userDTO);
-            return;
         } else {
             view.loginFailed();
-            return;
         }
+        return;
 
     }
 }

@@ -1,4 +1,4 @@
-package com.tesco.sapient.main;
+package com.tesco.sapient.waste;
 
 import com.tesco.sapient.dto.ItemDTO;
 import com.tesco.sapient.dto.ItemTypeDTO;
@@ -12,7 +12,7 @@ import java.util.List;
  * @version 1.0
  * @since 2018-03-17
  */
-public interface MainActivityView {
+public interface WasteView {
 
     void fillAddItemSpinner(List<ItemTypeDTO> list);
 

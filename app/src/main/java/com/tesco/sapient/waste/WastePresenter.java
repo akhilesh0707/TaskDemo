@@ -1,4 +1,4 @@
-package com.tesco.sapient.main;
+package com.tesco.sapient.waste;
 
 import com.tesco.sapient.db.DataManager;
 import com.tesco.sapient.dto.ItemDTO;
@@ -8,24 +8,24 @@ import com.tesco.sapient.dto.ProductDTO;
 import java.util.List;
 
 /**
- * MainActivityPresenter to manage View and Business logic(Data model)
+ * WastePresenter to manage View and Business logic(Data model)
  *
  * @author Akhilesh Patil
  * @version 1.0
  * @since 2018-03-17
  */
-public class MainActivityPresenter {
+public class WastePresenter {
 
-    private MainActivityView view;
+    private WasteView view;
     private DataManager dataManager;
 
     /**
-     * Constructor to initialize MainActivityView and DataManger
+     * Constructor to initialize WasteView and DataManger
      *
      * @param view
      * @param dataManager
      */
-    public MainActivityPresenter(MainActivityView view, DataManager dataManager) {
+    public WastePresenter(WasteView view, DataManager dataManager) {
         this.view = view;
         this.dataManager = dataManager;
     }
